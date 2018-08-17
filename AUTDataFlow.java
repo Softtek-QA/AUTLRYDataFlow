@@ -15,9 +15,6 @@ import br.lry.functions.AUTProjectsFunctions;
  */
 public class AUTDataFlow {
 
-	
-	
-	
 	/**
 	 * 
 	 * Recupera um conjunto de parametros padrão para todos os sistemas
@@ -26,25 +23,21 @@ public class AUTDataFlow {
 	 * 
 	 * 
 	 */
-	public java.util.HashMap<String, String> autGetParameter(){
-		
-		java.util.HashMap<String,String> parametersOut = new java.util.HashMap<String,String>();
+	public java.util.HashMap<String, String> autGetParameter() {
+
+		java.util.HashMap<String, String> parametersOut = new java.util.HashMap<String, String>();
 		parametersOut.put("AUT_USER", "51028487");
-		parametersOut.put("AUT_PASSWORD","1234");	
-		
-		
+		parametersOut.put("AUT_PASSWORD", "1234");
+
 		return parametersOut;
 	}
-	
-	
-	
+
 	/**
 	 * 
 	 * Construtor padrão da classe
 	 * 
 	 */
-	public AUTDataFlow()
-	{
-		
-	}	
+	public AUTDataFlow() {
+
+	}
 }
