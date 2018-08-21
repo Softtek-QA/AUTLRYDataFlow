@@ -107,16 +107,16 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
 			vaDataCadastroPF.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÉSIA");	
 
-			vaDataCadastroPF.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.COMERCIAL);	
-			vaDataCadastroPF.get(1).put("AUT_CEP", "07776-425");	
-			vaDataCadastroPF.get(1).put("AUT_RUA_ENDERECO", "Rua prefeito teste");	
+			vaDataCadastroPF.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);	
+			vaDataCadastroPF.get(1).put("AUT_CEP", "07776-000");	
+			vaDataCadastroPF.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
 			vaDataCadastroPF.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-			vaDataCadastroPF.get(1).put("AUT_BAIRRO_ENDERECO", "JORDANÉSIA");	
+			vaDataCadastroPF.get(1).put("AUT_BAIRRO_ENDERECO", "EXPLANADA");	
 			vaDataCadastroPF.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataCadastroPF.get(1).put("AUT_CIDADE_ENDERECO", "CAJAMAR");	
-			vaDataCadastroPF.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.SP);	
+			vaDataCadastroPF.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIÚVA");	
+			vaDataCadastroPF.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
 			vaDataCadastroPF.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.CONDOMINIO);	
+			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
 
 
 			
