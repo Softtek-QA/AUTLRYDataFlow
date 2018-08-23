@@ -97,14 +97,16 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataCadastroPF = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			vaDataCadastroPF.put(1, new java.util.HashMap<String,Object>());
+			String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro();
 			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.FISICA);
-			vaDataCadastroPF.get(1).put("AUT_PASSAPORTE", AUTProjectsFunctions.gerarEstrangeiro());
+			vaDataCadastroPF.get(1).put("AUT_PASSAPORTE", codEstrangeiro);
 			vaDataCadastroPF.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
 			vaDataCadastroPF.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataCadastroPF.get(1).put("AUT_NOME", "AUT NOME: ".concat(AUTProjectsFunctions.gerarCPF()));	
+			vaDataCadastroPF.get(1).put("AUT_NOME_ESTRANGEIRO", "AUT NOME ESTRANG: ".concat(codEstrangeiro));	
+			vaDataCadastroPF.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataCadastroPF.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
 			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataCadastroPF.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.TELEFONE_FIXO);	
+			vaDataCadastroPF.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
 			vaDataCadastroPF.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataCadastroPF.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
 			vaDataCadastroPF.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
