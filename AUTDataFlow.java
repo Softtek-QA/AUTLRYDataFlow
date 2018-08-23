@@ -162,7 +162,6 @@ public class AUTDataFlow {
 		java.util.HashMap<String, String> parametersOut = new java.util.HashMap<String, String>();
 		parametersOut.put("AUT_USER", "51028487");
 		parametersOut.put("AUT_PASSWORD", "1234");
-
 **/
 		return AUT_GLOBAL_PARAMETERS.get(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString()).get(1);
 	}
