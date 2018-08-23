@@ -5,6 +5,7 @@ package br.lry.dataflow;
 
 import java.util.HashMap;
 
+import br.lry.components.va.AUTVACadastros.AUT_VA_CADASTROS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_ESTADOS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_CONTATO;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_ENDERECO;
@@ -96,6 +97,9 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataCadastroPF = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			vaDataCadastroPF.put(1, new java.util.HashMap<String,Object>());
+			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.FISICA);
+			vaDataCadastroPF.get(1).put("AUT_PASSAPORTE", AUTProjectsFunctions.gerarEstrangeiro());
+			vaDataCadastroPF.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
 			vaDataCadastroPF.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
 			vaDataCadastroPF.get(1).put("AUT_NOME", "AUT NOME: ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataCadastroPF.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
@@ -119,9 +123,7 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTRO_PF.toString(), vaDataCadastroPF);
-			
-			
-						
+								
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
