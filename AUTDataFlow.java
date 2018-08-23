@@ -12,6 +12,7 @@ import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_ENDERECO;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_RESIDENCIA;
 import br.lry.functions.AUTProjectsFunctions;
 import br.lry.functions.AUTProjectsFunctions.AUTLogMensagem;
+import br.lry.functions.AUTProjectsFunctions.AUTNumerosRandomicos;
 import br.lry.functions.AUTProjectsFunctions;
 
 
@@ -25,6 +26,8 @@ import br.lry.functions.AUTProjectsFunctions;
  */
 public class AUTDataFlow {
 	AUTLogMensagem AUT_LOG_MANAGER = null;
+	AUTNumerosRandomicos AUT_CURRENT_RANDOM_MANAGER = null;
+	
 	public java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>> AUT_GLOBAL_PARAMETERS = null;
 	
 	
@@ -78,7 +81,8 @@ public class AUTDataFlow {
 	 */
 	public java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String,Object>>> autInitDataFlow() {
 		try {
-			
+			AUT_CURRENT_RANDOM_MANAGER = new AUTNumerosRandomicos();
+						
 			AUT_GLOBAL_PARAMETERS = new java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>();
 			
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
@@ -98,21 +102,26 @@ public class AUTDataFlow {
 			
 			vaDataCadastroPF.put(1, new java.util.HashMap<String,Object>());
 			String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro();
-			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.FISICA);
+			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.ESTRANGEIRO);
 			vaDataCadastroPF.get(1).put("AUT_PASSAPORTE", codEstrangeiro);
 			vaDataCadastroPF.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
 			vaDataCadastroPF.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
 			vaDataCadastroPF.get(1).put("AUT_NOME_ESTRANGEIRO", "AUT NOME ESTRANG: ".concat(codEstrangeiro));	
 			vaDataCadastroPF.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(AUTProjectsFunctions.gerarCPF()));	
+			vaDataCadastroPF.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
+			vaDataCadastroPF.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PFFT: FT.".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
 			vaDataCadastroPF.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
 			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL", AUTProjectsFunctions.gerarEstrangeiro());	
+			vaDataCadastroPF.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+			vaDataCadastroPF.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+			vaDataCadastroPF.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
+			vaDataCadastroPF.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataCadastroPF.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
 			vaDataCadastroPF.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataCadastroPF.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
 			vaDataCadastroPF.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
 			vaDataCadastroPF.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
 			vaDataCadastroPF.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÉSIA");	
-
 			vaDataCadastroPF.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);	
 			vaDataCadastroPF.get(1).put("AUT_CEP", "07776-000");	
 			vaDataCadastroPF.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
