@@ -26,10 +26,34 @@ public class AUTDataFlow {
 	AUTLogMensagem AUT_LOG_MANAGER = null;
 	public java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>> AUT_GLOBAL_PARAMETERS = null;
 	
+	/**
+	 * 
+	 * Define os tipos de ambientes disponiveis na fábrica de testes
+	 * 
+	 * @author Softtek-QA
+	 *
+	 */
+	public enum AUT_TIPO_AMBIENTE{
+		HOMOLOG,
+		HOMOLOG2,
+		DESENVOLVIMENTO
+	}
+	
+	
+	public enum AUT_URL_APLICACOES{
+		VA_HOMOLOG,
+		VA_HOMOLOG2,
+		HMC_HOMOLOG,
+		HMC_HOMOLOG2
+		
+		
+	}
 	
 	public enum AUT_TABLE_PARAMETERS_NAMES{
 		AUT_VA_LOGIN,
-		AUT_VA_CADASTRO_PF;
+		AUT_VA_CADASTRO_PF,
+		AUT_HMC_LOGIN,
+		AUT_VA_GERACAO_PEDIDOS;
 		
 		@Override
 		public String toString() {
@@ -40,6 +64,12 @@ public class AUTDataFlow {
 			}
 			case AUT_VA_LOGIN:{
 				return "AUTVALOGIN001";
+			}
+			case AUT_HMC_LOGIN:{
+				return "AUTHMC001";
+			}
+			case AUT_VA_GERACAO_PEDIDOS: {
+				return "AUTVAPEDIDOS001";
 			}
 			default:{
 				return super.toString();
@@ -90,8 +120,30 @@ public class AUTDataFlow {
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
 			vaDataLogin.get(1).put("AUT_USER", "51021157");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
+
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
 
+			
+			/**
+			 * 
+			 * 
+			 * 
+			 * Parametros para configuração de componente de login sistema HMC
+			 * 
+			 * 
+			 */
+			java.util.HashMap<Integer, java.util.HashMap<String,Object>> hmcLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
+			
+			hmcLogin.put(1, new java.util.HashMap<String,Object>());
+			
+			hmcLogin.get(1).put("AUT_USER", "admin");
+			hmcLogin.get(1).put("AUT_PASSWORD", "nimda");
+			
+			
+			
 			
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataCadastroPF = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
@@ -124,7 +176,28 @@ public class AUTDataFlow {
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTRO_PF.toString(), vaDataCadastroPF);
 			
 			
-						
+			
+		
+			/*
+			 *MASSA DE DADOS PARA GERACAO DE PEDIDOS 
+			 */
+			
+			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataGeracaoPedidos001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			
+			vaDataGeracaoPedidos001.put(1, new java.util.HashMap<String, Object>());
+			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "51011683");
+			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
+			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "85438605");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
+			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
+
+			
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_GERACAO_PEDIDOS.toString(), vaDataGeracaoPedidos001);
+			
+			
+			
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
