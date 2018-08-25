@@ -123,7 +123,7 @@ public class AUTDataFlow {
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
 
-			
+			//Inclusao de tabela - Pedidos
 			/**
 			 * 
 			 * 
