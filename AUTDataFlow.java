@@ -127,9 +127,11 @@ public class AUTDataFlow {
 			vaDataLogin.get(1).put("AUT_USER", "51021157");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
 
+			
+			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
 
-			
+			//Inclusao de tabela - Pedidos
 			/**
 			 * 
 			 * 
