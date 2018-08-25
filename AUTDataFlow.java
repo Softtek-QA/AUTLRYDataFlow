@@ -191,10 +191,6 @@ public class AUTDataFlow {
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTRO_PF.toString(), vaDataCadastroPF);
 			
 			
-			
-<<<<<<< HEAD
-=======
-		
 			/*
 			 *MASSA DE DADOS PARA GERACAO DE PEDIDOS 
 			 */
@@ -214,8 +210,6 @@ public class AUTDataFlow {
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_GERACAO_PEDIDOS.toString(), vaDataGeracaoPedidos001);
 			
 			
-			
->>>>>>> branch 'master' of https://github.com/Softtek-QA/AUTLRYDataFlow.git
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
