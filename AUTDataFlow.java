@@ -79,7 +79,8 @@ public class AUTDataFlow {
 	 * @return dicionarioDeDados - por tabela
 	 * 
 	 */
-	public java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String,Object>>> autInitDataFlow() {
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> autInitDataFlow() {
 		try {
 			AUT_CURRENT_RANDOM_MANAGER = new AUTNumerosRandomicos();
 						
@@ -102,7 +103,7 @@ public class AUTDataFlow {
 			
 			vaDataCadastroPF.put(1, new java.util.HashMap<String,Object>());
 			String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro();
-			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.ESTRANGEIRO);
+			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
 			vaDataCadastroPF.get(1).put("AUT_PASSAPORTE", codEstrangeiro);
 			vaDataCadastroPF.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
 			vaDataCadastroPF.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
@@ -134,7 +135,9 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTRO_PF.toString(), vaDataCadastroPF);
-								
+			
+			
+			
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
