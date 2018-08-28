@@ -241,6 +241,7 @@ public class AUTDataFlow {
 		return AUT_GLOBAL_PARAMETERS.get(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString()).get(1);
 	}
 
+	//teste de configuração 0000000001
 	/**
 	 * 
 	 * Construtor padrão da classe
