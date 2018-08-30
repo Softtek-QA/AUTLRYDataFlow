@@ -200,7 +200,7 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataGeracaoPedidos001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			vaDataGeracaoPedidos001.put(1, new java.util.HashMap<String, Object>());
-			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "51011683");
+			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "22222222");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "85438605");
