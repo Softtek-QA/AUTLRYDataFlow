@@ -157,7 +157,7 @@ public class AUTDataFlow {
 			
 			vaDataCadastroPF.put(1, new java.util.HashMap<String,Object>());
 			String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro();
-			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.FISICA);
+			vaDataCadastroPF.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
 			vaDataCadastroPF.get(1).put("AUT_PASSAPORTE", codEstrangeiro);
 			vaDataCadastroPF.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
 			vaDataCadastroPF.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
@@ -166,7 +166,8 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
 			vaDataCadastroPF.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PFFT: FT.".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
 			vaDataCadastroPF.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL", AUTProjectsFunctions.gerarEstrangeiro());	
+			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
 			vaDataCadastroPF.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
 			vaDataCadastroPF.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataCadastroPF.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
