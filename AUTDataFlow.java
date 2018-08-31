@@ -140,18 +140,6 @@ public class AUTDataFlow {
 			 * 
 			 * 
 			 */
-			java.util.HashMap<Integer, java.util.HashMap<String,Object>> hmcLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
-			
-			hmcLogin.put(1, new java.util.HashMap<String,Object>());
-			
-			hmcLogin.get(1).put("AUT_USER", "admin");
-			hmcLogin.get(1).put("AUT_PASSWORD", "nimda");
-			
-			
-			
 			
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataCadastroPF = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
@@ -209,10 +197,26 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 
 			
-			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_GERACAO_PEDIDOS.toString(), vaDataGeracaoPedidos001);
+
 			
+
+			/*
+			 *  MASSA DE DADOS PARA CONFIGURAÇÕES E PARAMETRIZAÇÕES DO HMC - HYBRIS
+			 * 
+			 */
 			
+			java.util.HashMap<Integer, java.util.HashMap<String,Object>> hmcLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			
+			hmcLogin.put(1, new java.util.HashMap<String,Object>());
+			
+			hmcLogin.get(1).put("AUT_URL", "https://vahomolog-admin.leroymerlin.com.br/hmc/hybris");
+			hmcLogin.get(1).put("AUT_USER", "admin");
+			hmcLogin.get(1).put("AUT_PASSWORD", "nimda");
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
+			
+
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
