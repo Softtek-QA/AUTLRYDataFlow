@@ -124,7 +124,7 @@ public class AUTDataFlow {
 			 * 
 			 */
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
-			vaDataLogin.get(1).put("AUT_USER", "lynda.romais");
+			vaDataLogin.get(1).put("AUT_USER", "55000001");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
 
 			
