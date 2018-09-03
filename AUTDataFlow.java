@@ -124,7 +124,7 @@ public class AUTDataFlow {
 			 * 
 			 */
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
-			vaDataLogin.get(1).put("AUT_USER", "51021157");
+			vaDataLogin.get(1).put("AUT_USER", "lynda.romais");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
 
 			
@@ -189,7 +189,7 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataGeracaoPedidos001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			vaDataGeracaoPedidos001.put(1, new java.util.HashMap<String, Object>());
-			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "22222222");
+			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "lynda.romais");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89455163 ");
@@ -217,14 +217,7 @@ public class AUTDataFlow {
 			hmcLogin.get(1).put("AUT_USER_NAME", "Automation Test");	//Criar nome padronizado
 			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@hotmail.com");
 			hmcLogin.get(1).put("AUT_NEW_PASSWORD", "1234");
-			hmcLogin.get(1).put("AUT_IDENTIFIER_TYPE", "customer");
-			
-			
-			/*
-			 * 
-			 * eter("AUT_NEW_PASSWORD")("AUT_IDENTIFIER").toString();
-			 */
-			
+
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
 			
