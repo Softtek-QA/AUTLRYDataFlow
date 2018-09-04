@@ -189,10 +189,10 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataGeracaoPedidos001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			vaDataGeracaoPedidos001.put(1, new java.util.HashMap<String, Object>());
-			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "lynda.romais");
+			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "55000002");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89455163 ");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89455163");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
