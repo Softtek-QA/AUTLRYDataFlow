@@ -216,11 +216,12 @@ public class AUTDataFlow {
 			hmcLogin.get(1).put("AUT_URL", "https://vahomolog-admin.leroymerlin.com.br/hmc/hybris");
 			hmcLogin.get(1).put("AUT_USER", "fernanda.aguiar");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
-			hmcLogin.get(1).put("AUT_USER_ID", "11111111");	//criar numero randomico
+			hmcLogin.get(1).put("AUT_USER_ID", "5500".concat(AUTProjectsFunctions.gerarEstrangeiro()));	//criar numero randomico
 			hmcLogin.get(1).put("AUT_USER_NAME", "Automation Test");	//Criar nome padronizado
 			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@hotmail.com");
 			hmcLogin.get(1).put("AUT_NEW_PASSWORD", "1234");
-
+			hmcLogin.get(1).put("AUT_IDENTIFIER_TYPE", "");
+			
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
 			
