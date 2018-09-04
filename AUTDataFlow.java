@@ -55,7 +55,7 @@ public class AUTDataFlow {
 	
 	public enum AUT_TABLE_PARAMETERS_NAMES{
 		AUT_VA_LOGIN,
-		AUT_VA_CADASTRO_PF,
+		AUT_VA_CADASTROS,
 		AUT_HMC_LOGIN,
 		AUT_VA_GERACAO_PEDIDOS;
 		
@@ -63,7 +63,7 @@ public class AUTDataFlow {
 		public String toString() {
 			// TODO Auto-generated method stub
 			switch(this) {
-			case AUT_VA_CADASTRO_PF:{
+			case AUT_VA_CADASTROS:{
 				return "AUTVACADASTRO001";
 			}
 			case AUT_VA_LOGIN:{
@@ -179,7 +179,7 @@ public class AUTDataFlow {
 			
 			
 			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTRO_PF.toString(), vaDataCadastroPF);
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTROS.toString(), vaDataCadastroPF);
 		
 			
 			/*
@@ -195,6 +195,9 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89455163 ");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
+			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CNPJ", "78651738811");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CPF", "78651738811");
 
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_GERACAO_PEDIDOS.toString(), vaDataGeracaoPedidos001);
