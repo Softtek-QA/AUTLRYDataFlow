@@ -10,6 +10,7 @@ import br.lry.components.va.AUTVACadastros.AUT_VA_ESTADOS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_CONTATO;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_ENDERECO;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_RESIDENCIA;
+import br.lry.dataflow.AUTDataFlow.AUT_TABLE_PARAMETERS_NAMES;
 import br.lry.functions.AUTProjectsFunctions;
 import br.lry.functions.AUTProjectsFunctions.AUTLogMensagem;
 import br.lry.functions.AUTProjectsFunctions.AUTNumerosRandomicos;
@@ -124,7 +125,7 @@ public class AUTDataFlow {
 			 * 
 			 */
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
-			vaDataLogin.get(1).put("AUT_USER", "55000001");
+			vaDataLogin.get(1).put("AUT_USER", "5500440986677");//"55000001");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
 
 			
@@ -189,15 +190,20 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataGeracaoPedidos001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			vaDataGeracaoPedidos001.put(1, new java.util.HashMap<String, Object>());
-			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "55000002");
+			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "5500368019793");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
-			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89423866");	// "89455163");
+			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "9");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89102006");	// "89102006");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CNPJ", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF", "78651738811");
+			vaDataGeracaoPedidos001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+			vaDataGeracaoPedidos001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+			vaDataGeracaoPedidos001.get(1).put("AUT_VALIDADE", "09/18");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+			
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_GERACAO_PEDIDOS.toString(), vaDataGeracaoPedidos001);
 
