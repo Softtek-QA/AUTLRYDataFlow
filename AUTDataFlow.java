@@ -227,7 +227,6 @@ public class AUTDataFlow {
 			hmcLogin.get(1).put("AUT_CODIGO_CATEGORIA", "999");
 			hmcLogin.get(1).put("AUT_CODIGO_DEPARTAMENTO", "50000425");
 			hmcLogin.get(1).put("AUT_LOJA", "0035_LMStore");
-			hmcLogin.get(1).put("AUT_GESTOR", "51017672");
 			
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
