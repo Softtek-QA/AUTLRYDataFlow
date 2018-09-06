@@ -198,7 +198,6 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CNPJ", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF", "78651738811");
-
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_GERACAO_PEDIDOS.toString(), vaDataGeracaoPedidos001);
 
@@ -208,7 +207,6 @@ public class AUTDataFlow {
 			 *  MASSA DE DADOS PARA CONFIGURAÇÕES E PARAMETRIZAÇÕES DO HMC - HYBRIS
 			 * 
 			 */
-			
 			java.util.HashMap<Integer, java.util.HashMap<String,Object>> hmcLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 			
 			hmcLogin.put(1, new java.util.HashMap<String,Object>());
@@ -217,18 +215,20 @@ public class AUTDataFlow {
 			hmcLogin.get(1).put("AUT_USER", "fernanda.aguiar");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
 			hmcLogin.get(1).put("AUT_USER_ID", "5500".concat(AUTProjectsFunctions.gerarEstrangeiro()));	//criar numero randomico
-			hmcLogin.get(1).put("AUT_USER_NAME", "Automation Test");	//Criar nome padronizado
-			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@hotmail.com");
+			hmcLogin.get(1).put("AUT_USER_NAME", "AUT VA USER: ");	//Criar nome padronizado
+			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@softtek.com");
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
 			hmcLogin.get(1).put("AUT_CANAL", "channel_store");
 			hmcLogin.get(1).put("AUT_TIPO", "B2BCustomer - Cliente B2B");
-			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0035_LMStore");
+			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0038_LMStore");
 			hmcLogin.get(1).put("AUT_DEPARTAMENTO", "50000425-PROJETO 3D VENDA ASSISTIDA");
 			hmcLogin.get(1).put("AUT_CODIGO_CATEGORIA", "999");
 			hmcLogin.get(1).put("AUT_CODIGO_DEPARTAMENTO", "50000425");
-			hmcLogin.get(1).put("AUT_LOJA", "0035_LMStore");
+			hmcLogin.get(1).put("AUT_GESTOR", "51017672");
+			hmcLogin.get(1).put("AUT_LOJA", "0038_LMStore");
 			
 			
+
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
 			
 
