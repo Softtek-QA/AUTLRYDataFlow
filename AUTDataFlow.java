@@ -153,7 +153,7 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_NOME_ESTRANGEIRO", "AUT NOME ESTRANG: ".concat(codEstrangeiro));	
 			vaDataCadastroPF.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataCadastroPF.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
-			vaDataCadastroPF.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PFFT: FT.".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
+			vaDataCadastroPF.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PJ:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
 			vaDataCadastroPF.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
 			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
 			vaDataCadastroPF.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
@@ -220,7 +220,7 @@ public class AUTDataFlow {
 			hmcLogin.get(1).put("AUT_URL", "https://vahomolog-admin.leroymerlin.com.br/hmc/hybris");
 			hmcLogin.get(1).put("AUT_USER", "fernanda.aguiar");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
-			hmcLogin.get(1).put("AUT_USER_ID", "5500".concat(AUTProjectsFunctions.gerarEstrangeiro()));	//criar numero randomico
+			hmcLogin.get(1).put("AUT_USER_ID", "55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(11)));	//criar numero randomico
 			hmcLogin.get(1).put("AUT_USER_NAME", "AUT VA USER: ");	//Criar nome padronizado
 			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@softtek.com");
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
