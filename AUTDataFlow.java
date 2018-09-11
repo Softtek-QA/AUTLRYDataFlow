@@ -58,7 +58,8 @@ public class AUTDataFlow {
 		AUT_VA_LOGIN,
 		AUT_VA_CADASTROS,
 		AUT_HMC_LOGIN,
-		AUT_VA_GERACAO_PEDIDOS;
+		AUT_VA_GERACAO_PEDIDOS,
+		AUT_SAP_ABASTECIMENTO;
 		
 		@Override
 		public String toString() {
@@ -75,6 +76,9 @@ public class AUTDataFlow {
 			}
 			case AUT_VA_GERACAO_PEDIDOS: {
 				return "AUTVAPEDIDOS001";
+			}
+			case AUT_SAP_ABASTECIMENTO:{
+				return "AUTSAPABASTESTOQUE001";
 			}
 			default:{
 				return super.toString();
@@ -192,8 +196,8 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.put(1, new java.util.HashMap<String, Object>());
 			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "5500368019793");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
-			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "9");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89102006");	// "89102006");
+			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89368790");	// "89102006");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
@@ -237,12 +241,20 @@ public class AUTDataFlow {
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
 			
+			
+			java.util.HashMap<Integer, java.util.HashMap<String,Object>> sapAbastecimento = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			sapAbastecimento.put(1, new java.util.HashMap<String,Object>());
+			sapAbastecimento.get(1).put("AUT_USER", "51028487");
+			sapAbastecimento.get(1).put("AUT_PWD", "Auto5@2020");
 
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAP_ABASTECIMENTO.toString(), sapAbastecimento);
+			
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
-			
-			AUT_LOG_MANAGER.logMensagem("AUT ERROR: INICIALIZATION OF PARAMETERS DATAFLOW : ".concat(e.getMessage()));
+			System.out.println("DATAFLOW : ERROR : INIT PARAMETERS");
+			System.out.println(e.getMessage());
+			//AUT_LOG_MANAGER.logMensagem("AUT ERROR: INICIALIZATION OF PARAMETERS DATAFLOW : ".concat(e.getMessage()));
 			
 			e.printStackTrace();
 			
