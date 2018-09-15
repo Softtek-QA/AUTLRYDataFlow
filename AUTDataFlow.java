@@ -131,7 +131,8 @@ public class AUTDataFlow {
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
 			vaDataLogin.get(1).put("AUT_USER", "5500440986677");//"55000001");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
-
+			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
+			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
 			
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
