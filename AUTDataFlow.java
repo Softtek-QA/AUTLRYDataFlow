@@ -21,7 +21,7 @@ import br.lry.functions.AUTProjectsFunctions;
  * 
  * Gerenciamento do fluxo de dados na automação
  * 
- * 
+ *  
  * @author Softtek - QA
  *
  */
@@ -129,7 +129,7 @@ public class AUTDataFlow {
 			 * 
 			 */
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
-			vaDataLogin.get(1).put("AUT_USER", "5500440986677");//"55000001");
+			vaDataLogin.get(1).put("AUT_USER", "55000001");//"55000001 //5500440986677");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
 			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
@@ -168,6 +168,7 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataCadastroPF.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
 			vaDataCadastroPF.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+			vaDataCadastroPF.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
 			vaDataCadastroPF.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
 			vaDataCadastroPF.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
 			vaDataCadastroPF.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
@@ -198,7 +199,7 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "5500368019793");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89296193");	// "89296193"|"89368790");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89057766");//"89296193-ItemOficial	");	// "89296193"|"89368790");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
