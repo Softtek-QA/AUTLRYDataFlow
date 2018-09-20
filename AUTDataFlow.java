@@ -21,7 +21,7 @@ import br.lry.functions.AUTProjectsFunctions;
  * 
  * Gerenciamento do fluxo de dados na automação
  * 
- * 
+ *  
  * @author Softtek - QA
  *
  */
@@ -198,7 +198,7 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "5500368019793");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89296193");	// "89296193"|"89368790");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89057766");//"89296193-ItemOficial	");	// "89296193"|"89368790");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
