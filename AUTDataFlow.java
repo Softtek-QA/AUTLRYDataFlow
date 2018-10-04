@@ -59,12 +59,16 @@ public class AUTDataFlow {
 		AUT_VA_CADASTROS,
 		AUT_HMC_LOGIN,
 		AUT_VA_GERACAO_PEDIDOS,
-		AUT_SAP_ABASTECIMENTO;
+		AUT_SAP_ABASTECIMENTO,
+		AUT_PDV_LINX;
 		
 		@Override
 		public String toString() {
 			// TODO Auto-generated method stub
 			switch(this) {
+			case AUT_PDV_LINX:{
+				return "AUTPDVLINX001";
+			}
 			case AUT_VA_CADASTROS:{
 				return "AUTVACADASTRO001";
 			}
@@ -183,8 +187,7 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
 			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
 			
-			
-			
+					
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTROS.toString(), vaDataCadastroPF);
 		
 			
@@ -198,7 +201,7 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "5500368019793");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89057766");//"89296193-ItemOficial	");	// "89296193"|"89368790");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89296193");//"89296193-ItemOficial	");	// "89296193"|"89368790");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
@@ -223,7 +226,7 @@ public class AUTDataFlow {
 			hmcLogin.put(1, new java.util.HashMap<String,Object>());
 			
 			hmcLogin.get(1).put("AUT_URL", "https://vahomolog-admin.leroymerlin.com.br/hmc/hybris");
-			hmcLogin.get(1).put("AUT_USER", "fernanda.aguiar");
+			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
 			hmcLogin.get(1).put("AUT_USER_ID", "55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(11)));	//criar numero randomico
 			hmcLogin.get(1).put("AUT_USER_NAME", "AUT VA USER: ");	//Criar nome padronizado
@@ -249,6 +252,18 @@ public class AUTDataFlow {
 			sapAbastecimento.get(1).put("AUT_PWD", "Auto5@2020");
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAP_ABASTECIMENTO.toString(), sapAbastecimento);
+			
+			
+			java.util.HashMap<Integer, java.util.HashMap<String,Object>> pdv = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			pdv.put(1, new java.util.HashMap<String,Object>());
+			pdv.get(1).put("AUT_OPERADOR", "951028487");
+			pdv.get(1).put("AUT_PWD_OPERADOR", "9951028487");
+			pdv.get(1).put("AUT_COORDENADOR", "51028487");
+			pdv.get(1).put("AUT_PWD_COORDENADOR", "51028487");
+
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_PDV_LINX.toString(), pdv);
+			
 			
 			return AUT_GLOBAL_PARAMETERS;
 		}
