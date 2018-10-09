@@ -96,6 +96,7 @@ public class AUTDataFlow {
 	 */
 	public static class AUTDataTableStruct{
 		
+		
 		/**
 		 * 
 		 * Construtor padrão da classe de objetos
@@ -130,8 +131,10 @@ public class AUTDataFlow {
 			 */
 			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
 			vaDataLogin.get(1).put("AUT_USER", "55000001");//"55000001 //5500440986677");
+			vaDataLogin.get(1).put("AUT_USER_TELEVENDAS", "5576316456068");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
-			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
+			vaDataLogin.get(1).put("AUT_URL_VA", "https://186.233.201.61/va/lmbr/pt/BRL/login");
+			//vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
 			
 			
@@ -175,6 +178,16 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÉSIA");	
 			vaDataCadastroPF.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
 			
+			vaDataCadastroPF.get(1).put("AUT_CEP", "06013-006");	
+			vaDataCadastroPF.get(1).put("AUT_RUA_ENDERECO", "Rua Antônio Agú");	
+			vaDataCadastroPF.get(1).put("AUT_NUMERO_ENDERECO", "256");	
+			vaDataCadastroPF.get(1).put("AUT_BAIRRO_ENDERECO", "Centro");	
+			vaDataCadastroPF.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+			vaDataCadastroPF.get(1).put("AUT_CIDADE_ENDERECO", "Osasco");	
+			vaDataCadastroPF.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.SP);	
+			vaDataCadastroPF.get(1).put("AUT_REFERENCIA_ENDERECO", "Loja Sabaroa");	
+			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
+			
 			vaDataCadastroPF.get(1).put("AUT_CEP_2", "06013-006");	
 			vaDataCadastroPF.get(1).put("AUT_RUA_ENDERECO_2", "Rua Antônio Agú");	
 			vaDataCadastroPF.get(1).put("AUT_NUMERO_ENDERECO_2", "256");	
@@ -185,8 +198,8 @@ public class AUTDataFlow {
 			vaDataCadastroPF.get(1).put("AUT_REFERENCIA_ENDERECO_2", "Loja Sabaroa");	
 			vaDataCadastroPF.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA_2", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
 
-			
-			
+			vaDataCadastroPF.get(1).put("AUT_CNPJ_INVALIDO", "37.764.388/0009-90");	
+			vaDataCadastroPF.get(1).put("AUT_CPF_INVALIDO", "510.354.523-93");	
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_CADASTROS.toString(), vaDataCadastroPF);
 		
@@ -201,7 +214,7 @@ public class AUTDataFlow {
 			vaDataGeracaoPedidos001.get(1).put("AUT_USUARIO_LOJA", "5500368019793");
 			vaDataGeracaoPedidos001.get(1).put("AUT_SENHA", "1234");
 			vaDataGeracaoPedidos001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89057766");//"89296193-ItemOficial	");	// "89296193"|"89368790");
+			vaDataGeracaoPedidos001.get(1).put("AUT_CODIGO_ITEM", "89296193");//"89296193-ItemOficial	");	// "89296193"|"89368790");
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_NOVO", AUTProjectsFunctions.gerarCPF());
 			vaDataGeracaoPedidos001.get(1).put("AUT_CPF_CLIENTE_CADASTRADO", "78651738811");
 			vaDataGeracaoPedidos001.get(1).put("AUT_PASSAPORTE", "78651738811");
@@ -226,15 +239,17 @@ public class AUTDataFlow {
 			hmcLogin.put(1, new java.util.HashMap<String,Object>());
 			
 			hmcLogin.get(1).put("AUT_URL", "https://vahomolog-admin.leroymerlin.com.br/hmc/hybris");
-			hmcLogin.get(1).put("AUT_USER", "fernanda.aguiar");
+			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
 			hmcLogin.get(1).put("AUT_USER_ID", "55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(11)));	//criar numero randomico
 			hmcLogin.get(1).put("AUT_USER_NAME", "AUT VA USER: ");	//Criar nome padronizado
 			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@softtek.com");
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
 			hmcLogin.get(1).put("AUT_CANAL", "channel_store");
+			hmcLogin.get(1).put("AUT_CANAL_SALES", "channel_telesales");
 			hmcLogin.get(1).put("AUT_TIPO", "B2BCustomer - Cliente B2B");
 			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0038_LMStore");
+			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO_TELE", "TELEVENDAS");
 			hmcLogin.get(1).put("AUT_DEPARTAMENTO", "50000425-PROJETO 3D VENDA ASSISTIDA");
 			hmcLogin.get(1).put("AUT_CODIGO_CATEGORIA", "999");
 			hmcLogin.get(1).put("AUT_CODIGO_DEPARTAMENTO", "50000425");
