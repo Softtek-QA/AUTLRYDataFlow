@@ -412,8 +412,8 @@ public class AUTDataFlow {
 			vaDataLogin.get(1).put("AUT_USER", "55000001");//"55000001 //5500440986677");
 			vaDataLogin.get(1).put("AUT_USER_TELEVENDAS", "5576316456068");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
-			vaDataLogin.get(1).put("AUT_URL_VA", "https://186.233.201.61/va/lmbr/pt/BRL/login");
-			//vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
+			//vaDataLogin.get(1).put("AUT_URL_VA", "https://186.233.201.61/va/lmbr/pt/BRL/login");
+			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
@@ -433,16 +433,9 @@ public class AUTDataFlow {
 			
 			
 			
-			/*
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USUARIO",autGetParametersFromTable(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN,"AUT_USER_TELEVENDAS"));
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_SENHA",autGetParametersFromTable(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN,"AUT_PASSWORD"));
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",autGetParametersFromTable(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN,"AUT_URL_VA"));
-			
-			*/
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
 			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USER", "5576316456068");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USUARIO", "5576316456068");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_SENHA", "1234");
 			
 			
