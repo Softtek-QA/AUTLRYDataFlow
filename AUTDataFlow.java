@@ -412,6 +412,7 @@ public class AUTDataFlow {
 			vaDataLogin.get(1).put("AUT_USER", "55000001");//"55000001 //5500440986677");
 			vaDataLogin.get(1).put("AUT_USER_TELEVENDAS", "5576316456068");
 			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
+			//vaDataLogin.get(1).put("AUT_URL_VA", "https://186.233.201.61/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
 			
@@ -431,13 +432,14 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 	
 			
+			
+			
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USER", "5576316456068");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
 			
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
 			
-	
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001);
 
 			
