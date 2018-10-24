@@ -354,6 +354,9 @@ public class AUTDataFlow {
 			case AUT_HMC_LOGIN:{
 				return "AUTHMC001";
 			}
+			case AUT_SAFE_LOGIN:{
+				return "AUTSAFE001";
+			}
 			case AUT_VA_GERACAO_PEDIDOS: {
 				return "AUTVAPEDIDOS001";
 			}
@@ -416,9 +419,31 @@ public class AUTDataFlow {
 			//vaDataLogin.get(1).put("AUT_URL_VA", "https://186.233.201.61/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");
 			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
+			vaDataLogin.get(1).put("AUT_URL_SAFE", "http://10.56.96.170/safe/asp/default.asp");
+			
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
 
+			
+
+			
+			// CONFIGURAÇÕES SAFE
+			java.util.HashMap<Integer,java.util.HashMap<String,Object>> safeDataLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			
+			/**
+			 * Configurações de parametrização para a aplicação SAFE
+			 */
+			safeDataLogin.put(1, new java.util.HashMap<String,Object>());
+			safeDataLogin.get(1).put("AUT_USER", "51026089");
+			safeDataLogin.get(1).put("AUT_PASSWORD", "Leroy123");
+			safeDataLogin.get(1).put("AUT_URL_SAFE", "http://10.56.96.170/safe/asp/default.asp");
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAFE_LOGIN.toString(),safeDataLogin);
+
+			
+			
+			
+			
 			
 			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001
 			/**
@@ -437,6 +462,9 @@ public class AUTDataFlow {
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA", br.lry.components.va.cat018.AUTSelecaoLoja.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA );
 
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001);
+
+			
 			
 			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001
 			/**
