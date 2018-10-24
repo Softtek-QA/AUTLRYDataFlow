@@ -56,6 +56,7 @@ public class AUTDataFlow {
 		AUT_VA_LOGIN,
 		AUT_VA_CADASTROS,
 		AUT_HMC_LOGIN,
+		AUT_SAFE_LOGIN,
 		AUT_VA_GERACAO_PEDIDOS,
 		AUT_SAP_ABASTECIMENTO,
 		RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001,
@@ -962,15 +963,11 @@ public class AUTDataFlow {
 			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 			
 			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USER", "5576316456068");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("NUMERO_DOCUMENTO","58.506.064/0001-49");
-
-			
-			
-			
+			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_USER", "5576316456068");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("NUMERO_DOCUMENTO","58.506.064/0001-49");
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001);
 
@@ -1093,7 +1090,23 @@ public class AUTDataFlow {
 			
 			
 
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAFE_LOGIN.toString(), hmcLogin);
+			
+			/*
+			 *  MASSA DE DADOS PARA CONFIGURAÇÕES E PARAMETRIZAÇÕES DO SAFE - HYBRIS
+			 *  
+			 */
+			
+			java.util.HashMap<Integer, java.util.HashMap<String,Object>> safeLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+			
+			safeLogin.put(1, new java.util.HashMap<String,Object>());
+			
+			safeLogin.get(1).put("AUT_URL", "hhttp://10.56.96.170/safe/asp/default.asp");
+			safeLogin.get(1).put("AUT_USER", "51028487");
+			safeLogin.get(1).put("AUT_PASSWORD", "1234");
+			
+
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAFE_LOGIN.toString(), safeLogin);
 			
 			
 			java.util.HashMap<Integer, java.util.HashMap<String,Object>> sapAbastecimento = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
