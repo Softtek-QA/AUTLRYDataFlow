@@ -5,6 +5,8 @@ package br.lry.dataflow;
 
 import java.util.HashMap;
 
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_PROFISSOES;
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TIPO_CONVENIO;
 import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TYPE_PERSONS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_CADASTROS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_ESTADOS;
@@ -67,12 +69,16 @@ public class AUTDataFlow {
 		AUT_VA_GERACAO_PEDIDOS,
 		AUT_SAP_ABASTECIMENTO,
 		AUT_PDV_LINX,
-		AUT_SAFE_VALE_TROCA_LINX;
+		AUT_SAFE_VALE_TROCA_LINX,
+		AUT_SAFE_CADASTROS_CLIENTE_CONVENIADO_LINX;
 		
 		@Override
 		public String toString() {
 			// TODO Auto-generated method stub
 			switch(this) {
+			case AUT_SAFE_CADASTROS_CLIENTE_CONVENIADO_LINX:{
+				return "AUTSAFECADASTROSCLIENTESCONVENLINX001";
+			}
 			case AUT_SAFE_VALE_TROCA_LINX:{
 				return "AUTSAFELINX001";
 			}
@@ -310,6 +316,34 @@ public class AUTDataFlow {
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAFE_VALE_TROCA_LINX.toString(), safeLinx);
 			
 			
+			
+			java.util.HashMap<Integer, java.util.HashMap<String,Object>> safeCadCliConvenioLinx = new java.util.HashMap<Integer, java.util.HashMap<String,Object>>();
+			safeCadCliConvenioLinx.put(1, new java.util.HashMap<String,Object>());
+			
+			safeCadCliConvenioLinx.get(1).put("AUT_TIPO_CONVENIO", AUT_SAFE_TIPO_CONVENIO.COLABORADOR);
+			safeCadCliConvenioLinx.get(1).put("AUT_TIPO_PESSOA", AUT_SAFE_TYPE_PERSONS.FISICA2);
+			safeCadCliConvenioLinx.get(1).put("AUT_DOCUMENTO", AUTProjectsFunctions.gerarCPF());
+			safeCadCliConvenioLinx.get(1).put("AUT_PF_NOME", "AUT NOME PF :");
+			safeCadCliConvenioLinx.get(1).put("AUT_PF_RG", "124536879");			
+			safeCadCliConvenioLinx.get(1).put("AUT_ORG_EMISSOR", "SSP/SP");
+			safeCadCliConvenioLinx.get(1).put("AUT_DATA_NASCIMENTO", "23/02/1989");
+			safeCadCliConvenioLinx.get(1).put("AUT_PROFISSAO", AUT_SAFE_PROFISSOES.ARQUITETO);
+			safeCadCliConvenioLinx.get(1).put("AUT_EMAIL", "automation@softtek.com");
+			safeCadCliConvenioLinx.get(1).put("AUT_LOGRADOURO", "LOGRADOURO TESTES");
+			safeCadCliConvenioLinx.get(1).put("AUT_NUMERO_ENDERECO", "235");
+			safeCadCliConvenioLinx.get(1).put("AUT_COMPLEMENTO_ENDERECO", "automation@softtek.com");
+			safeCadCliConvenioLinx.get(1).put("AUT_BAIRRO", "JORDANESIA");
+			safeCadCliConvenioLinx.get(1).put("AUT_CEP", "JORDANESIA");
+			safeCadCliConvenioLinx.get(1).put("AUT_CIDADE", "CAJAMAR");
+			safeCadCliConvenioLinx.get(1).put("AUT_BAIRRO", "JORDANESIA");
+			safeCadCliConvenioLinx.get(1).put("AUT_UF", "SP");
+			safeCadCliConvenioLinx.get(1).put("AUT_TEL_DD1", "11");
+			safeCadCliConvenioLinx.get(1).put("AUT_TEL_FONE1", "963730179");
+			safeCadCliConvenioLinx.get(1).put("AUT_TEL_RAMAL1", "0286");
+
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAFE_CADASTROS_CLIENTE_CONVENIADO_LINX.toString(), safeCadCliConvenioLinx);
+
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
