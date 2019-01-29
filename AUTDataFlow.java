@@ -55,6 +55,7 @@ public class AUTDataFlow {
 		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(line);				
  	}
 
+	
 	/**
 	 * Executa procedimentos para copi de dados de um hash map orirgem para o destino especificado
 	 * 
@@ -91,8 +92,7 @@ public class AUTDataFlow {
 		catch(java.lang.Exception e) {
 			System.out.println("AUT ERRO: DATAFLOW : COPY DATA");
 			System.out.println(e.getMessage());
-			e.printStackTrace();
-			
+			e.printStackTrace();			
 			
 			return null;
 		}
@@ -688,7 +688,12 @@ public class AUTDataFlow {
 			sapFatZOSDGCP.get(1).put("AUT_DATA_INICIAL", "01.01.2019");
 			sapFatZOSDGCP.get(1).put("AUT_DATA_FINAL", "01.02.2019");
 			sapFatZOSDGCP.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");
-				
+			
+			sapFatZOSDGCP.get(1).put("AUT_FILA", "ARMAZENA");
+			sapFatZOSDGCP.get(1).put("AUT_FORMATO", "16X20ITS");
+			sapFatZOSDGCP.get(1).put("AUT_DOC_FORNECIMENTO", "800000109");
+			sapFatZOSDGCP.get(1).put("INIT_TRANSACTION", true);
+			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_SAP_FATURAMENTO_ZOSDGCP.toString(), sapFatZOSDGCP);
 
 			
@@ -698,7 +703,6 @@ public class AUTDataFlow {
 			pdv.get(1).put("AUT_PWD_OPERADOR", "9951028487");
 			pdv.get(1).put("AUT_COORDENADOR", "51028487");
 			pdv.get(1).put("AUT_PWD_COORDENADOR", "51028487");
-
 			
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_PDV_LINX.toString(), pdv);
 			
