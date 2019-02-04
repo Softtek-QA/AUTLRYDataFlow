@@ -2673,6 +2673,248 @@ public class AUTDataFlow {
 
 			
 			
+
+			// -------------------------------------------------------------------------
+
+					
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_USER", "55192309");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001);
+					
+			// -------------------------------------------------------------------------
+					
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_USER", "55001062");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001);		
+					
+			//-------------------------------------------------------------------------
+
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_USER", "55192309");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+					
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001);
+					
+			// -------------------------------------------------------------------------
+					
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_USER", "55001062");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001);
+					
+			//-------------------------------------------------------------------------
+
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_USER", "55192309");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001);
+					
+			// -------------------------------------------------------------------------
+					
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_USER", "55001062");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001);
+					
+					
+			//-------------------------------------------------------------------------
+
+					//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de ExclusÃ£o do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_USER", "55000035");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001);
+
+			//----------------------------------------------------------------------------------------------------------	
+
+
+			   //Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para configuraÃ§Ã£o de componente de ExclusÃ£o do sistema VA
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+					
+					
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_USER", "55000045");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+					vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+					
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001);
+				
+			//----------------------------------------------------------------------------------------------------------	
+					
+					
+					//Inclusao de tabela - Tabela de Itens
+					/**
+					 * 
+					 * 
+					 * 
+					 * Parametros para carga dos Itens
+					 * 
+					 * 
+					 */
+					
+					java.util.HashMap<String,java.util.HashMap<String,Object>> itens = new java.util.HashMap<String,java.util.HashMap<String,Object>>();	
+					itens.put("Produto", new java.util.HashMap<String,Object>());
+					vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get("Produto").put("Quantidade", "FluxoSaida");
+
+					AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001);
+					
+		   // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------			
+					
+					
+			
 			
 			return AUT_GLOBAL_PARAMETERS;
 		}
