@@ -3,6 +3,8 @@
  */
 package br.lry.dataflow;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -28,6 +30,7 @@ import br.lry.functions.AUTProjectsFunctions;
 import br.lry.functions.AUTProjectsFunctions.AUTLogMensagem;
 import br.lry.functions.AUTProjectsFunctions.AUTNumerosRandomicos;
 import br.lry.functions.AUTProjectsFunctions.AUT_TIPO_LOJA;
+import br.stk.framework.db.management.AUTDBProcessDataFlow;
 import br.stk.framework.db.management.AUTDBProcessDataFlow.AUT_SQL_OPERATIONS_PROCESS_PARAMETERS;
 import br.stk.framework.db.management.AUTDBProcessDataFlow.AUT_SQL_PROPERTIES;
 import br.stk.framework.db.management.AUTDBProcessDataFlow.AUT_TYPE_FIELD_DATAFLOW;
@@ -660,10 +663,10 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.put(1, new java.util.HashMap<String,Object>());
 
 			hmcLogin.get(1).put("AUT_URL", "https://10.56.62.199:9002/hmc/hybris");
-			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira");
+			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira2323111");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
 			hmcLogin.get(1).put("AUT_USER_ID", "55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(6)));	//criar numero randomico
-			hmcLogin.get(1).put("AUT_USER_NAME", "AUT VA USER: ");	//Criar nome padronizado
+			hmcLogin.get(1).put("AUT_USER_NAME", "AUT HMCVA USER: ");	//Criar nome padronizado
 			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@softtek.com");
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
 			hmcLogin.get(1).put("AUT_CANAL", "channel_store");
@@ -5982,35 +5985,6 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			AUT_GLOBAL_PARAMETERS.clear();						
 		}
 	}
-
-	
-	/**
-	 * 
-	 * Executa procedimentos de upload de dados para SGDB
-	 * 
-	 * @param dataFlw - Objeto dataflow
-	 */
-	public <TDataFlow extends AUTDataFlow> void autUploadDataFlowInDB(TDataFlow dataFlw) {	
-		this.autGetDataFlowDBIntegration().autInsertNewParameterDBByDataFlow(AUT_SQL_OPERATIONS_PROCESS_PARAMETERS.AUT_DELETE_PARAMETERS_BY_SCENARIO,AUT_SQL_OPERATIONS_PROCESS_PARAMETERS.AUT_INSERT_NEW_PARAMETERS,dataFlw.autInitDataFlow(),AUT_TYPE_FIELD_DATAFLOW.ALL.toString());		
-	}
-
-	/**
-	 * 
-	 * Executa procedimentos de upload de dados para SGDB
-	 * 
-	 * @param parameteres - Hash de dados
-	 * 
-	 */
-	public <TDataFlowParameters extends java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>> void autUploadDataFlowInDB(TDataFlowParameters parameteres) {	
-		this.autGetDataFlowDBIntegration().autInsertNewParameterDBByDataFlow(AUT_SQL_OPERATIONS_PROCESS_PARAMETERS.AUT_DELETE_PARAMETERS_BY_SCENARIO,AUT_SQL_OPERATIONS_PROCESS_PARAMETERS.AUT_INSERT_NEW_PARAMETERS,parameteres,AUT_TYPE_FIELD_DATAFLOW.ALL.toString());		
-	}
-
-	public void autUploadDataFlowInDB() {		
-		autUploadDataFlowInDB(this);
-	}
-	
-	public void autDownloadDataFlowInDB() {
-		autGetDataFlowDBIntegration().autDownloadParametersDataFlowFromDB(AUT_SQL_OPERATIONS_PROCESS_PARAMETERS.AUT_SELECT_PARAMETERS_BY_SCENARIO.toString(),new Object[] {"%"}); 
-	}
-	
 }
+
+
