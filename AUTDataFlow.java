@@ -589,7 +589,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataCadastro.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ");	
 			vaDataCadastro.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR");	
 			vaDataCadastro.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE");	
-			vaDataCadastro.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+			vaDataCadastro.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
 			vaDataCadastro.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataCadastro.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
 			vaDataCadastro.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.PR);	
@@ -597,7 +597,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataCadastro.get(1).put("AUT_ENDERECO_PESQUISA", "RUA CIDADE JARDIM");
 			vaDataCadastro.get(1).put("AUT_BAIRRO_PESQUISA", "Alto");	
 			vaDataCadastro.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-
+			
 			vaDataCadastro.get(1).put("AUT_CEP", "82590-100");	
 			vaDataCadastro.get(1).put("AUT_RUA_ENDERECO", "BR116");	
 			vaDataCadastro.get(1).put("AUT_NUMERO_ENDERECO", "256");	
@@ -663,7 +663,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.put(1, new java.util.HashMap<String,Object>());
 
 			hmcLogin.get(1).put("AUT_URL", "https://10.56.62.199:9002/hmc/hybris");
-			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira2323111");
+			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
 			hmcLogin.get(1).put("AUT_USER_ID", "55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(6)));	//criar numero randomico
 			hmcLogin.get(1).put("AUT_USER_NAME", "AUT HMCVA USER: ");	//Criar nome padronizado
@@ -677,7 +677,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.get(1).put("AUT_CODIGO_DEPARTAMENTO", "50000425");
 			hmcLogin.get(1).put("AUT_GESTOR", "51017672");
 			hmcLogin.get(1).put("AUT_LOJA", "0035_LMStore");
-			hmcLogin.get(1).put("AUT_PERFIL_ACESSO", AUT_HMC_PERFIL_ACESSO.USUARIO_LOJA);
+			hmcLogin.get(1).put("AUT_PERFIL_ACESSO", AUT_HMC_PERFIL_ACESSO.USUARIO_LOJA.name());
 
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
@@ -1180,7 +1180,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
@@ -2552,7 +2552,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
@@ -2615,7 +2615,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCNPJ()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
@@ -2676,7 +2676,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
 			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
@@ -5956,6 +5956,13 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 	public java.util.HashMap<String, Object> autGetParameters(AUT_TABLE_PARAMETERS_NAMES table) {
 		autInitDataFlow();
 		return AUT_GLOBAL_PARAMETERS.get(table.toString()).get(1);
+	}
+
+	public java.util.HashMap<Integer,java.util.HashMap<String, Object>> autGetParametersAllLines(AUT_TABLE_PARAMETERS_NAMES table) {
+		if(AUT_GLOBAL_PARAMETERS==null) {
+			autInitDataFlow();
+		}
+		return AUT_GLOBAL_PARAMETERS.get(table.toString());
 	}
 
 	public java.util.HashMap<String, Object> autGetParameters(AUT_TABLE_PARAMETERS_NAMES table,int rowNumber) {
