@@ -60,10 +60,13 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 
 	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela){
 		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(1);		
-
 	}
 
-	public <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela,Integer line){
+	public  <TOption extends java.lang.Enum> java.util.HashMap<Integer,java.util.HashMap<String,Object>> autGetAllParametersFromTable(TOption nomeTabela){
+		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString());		
+	}
+	
+	public <TOption extends java.lang.Enum<AUT_TABLE_PARAMETERS_NAMES>> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela,Integer line){
 		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(line);				
 	}
 
@@ -148,6 +151,34 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		AUT_SAFE_VALE_TROCA_LINX,
 		AUT_SAFE_CADASTROS_CLIENTE_CONVENIADO_LINX,
 		AUT_SAFE_GERADOR_VOUCHER_LINX,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00002,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00003,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00004,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00005,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00006,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00007,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00008,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00009,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00010,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00011,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00012,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00013,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00014,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00015,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00016,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00017,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00018,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00019,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00020,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00021,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00022,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00023,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00024,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00025,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00026,
+		RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00027,
+
 		RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001,
 		RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001,
 		RSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001,
@@ -569,7 +600,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			String cnpj = AUTProjectsFunctions.gerarCNPJ();
 			String cpf = AUTProjectsFunctions.gerarCPF();
 			String cpfEstrangeiro = AUTProjectsFunctions.gerarCPF();
-			String inscricaoEstadual = AUTProjectsFunctions.autGetIncriptionPR();
+			String inscricaoEstadual = AUTProjectsFunctions.autGetIncriptionRS();
 
 			vaDataCadastro.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
 			vaDataCadastro.get(1).put("AUT_PASSAPORTE", codEstrangeiro);
@@ -592,29 +623,29 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataCadastro.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
 			vaDataCadastro.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
 			vaDataCadastro.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-			vaDataCadastro.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.PR);	
-			vaDataCadastro.get(1).put("AUT_CIDADE_PESQUISA", "BOCAIÚVA");
-			vaDataCadastro.get(1).put("AUT_ENDERECO_PESQUISA", "RUA CIDADE JARDIM");
-			vaDataCadastro.get(1).put("AUT_BAIRRO_PESQUISA", "Alto");	
+			vaDataCadastro.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.RS);	
+			vaDataCadastro.get(1).put("AUT_CIDADE_PESQUISA", "CANOAS");
+			vaDataCadastro.get(1).put("AUT_ENDERECO_PESQUISA", "AUT RUA SERGIPE");
+			vaDataCadastro.get(1).put("AUT_BAIRRO_PESQUISA", "NITEROI");	
 			vaDataCadastro.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
 			
-			vaDataCadastro.get(1).put("AUT_CEP", "82590-100");	
-			vaDataCadastro.get(1).put("AUT_RUA_ENDERECO", "BR116");	
+			vaDataCadastro.get(1).put("AUT_CEP", "92130-270");	
+			vaDataCadastro.get(1).put("AUT_RUA_ENDERECO", "AUT RUA SERGIPE");	
 			vaDataCadastro.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-			vaDataCadastro.get(1).put("AUT_BAIRRO_ENDERECO", "Alto");	
+			vaDataCadastro.get(1).put("AUT_BAIRRO_ENDERECO", "NITEROI");	
 			vaDataCadastro.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataCadastro.get(1).put("AUT_CIDADE_ENDERECO", "Curitiba");	
-			vaDataCadastro.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.PR);	
+			vaDataCadastro.get(1).put("AUT_CIDADE_ENDERECO", "CANOAS");	
+			vaDataCadastro.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.RS);	
 			vaDataCadastro.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
 			vaDataCadastro.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
 
-			vaDataCadastro.get(1).put("AUT_CEP_2", "82590-100");	
-			vaDataCadastro.get(1).put("AUT_RUA_ENDERECO_2", "BR116");	
+			vaDataCadastro.get(1).put("AUT_CEP_2", "92130-270");	
+			vaDataCadastro.get(1).put("AUT_RUA_ENDERECO_2", "AUT RUA SERGIPE");	
 			vaDataCadastro.get(1).put("AUT_NUMERO_ENDERECO_2", "256");	
-			vaDataCadastro.get(1).put("AUT_BAIRRO_ENDERECO_2", "Centro");	
+			vaDataCadastro.get(1).put("AUT_BAIRRO_ENDERECO_2", "NITEROI");	
 			vaDataCadastro.get(1).put("AUT_COMPLEMENTO_ENDERECO_2", "CASA 123");	
-			vaDataCadastro.get(1).put("AUT_CIDADE_ENDERECO_2", "Osasco");	
-			vaDataCadastro.get(1).put("AUT_ESTADO_ENDERECO_2", AUT_VA_ESTADOS.PR);	
+			vaDataCadastro.get(1).put("AUT_CIDADE_ENDERECO_2", "CANOAS");	
+			vaDataCadastro.get(1).put("AUT_ESTADO_ENDERECO_2", AUT_VA_ESTADOS.RS);	
 			vaDataCadastro.get(1).put("AUT_REFERENCIA_ENDERECO_2", "Loja Sabaroa");	
 			vaDataCadastro.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA_2", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
 
@@ -671,12 +702,12 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
 			hmcLogin.get(1).put("AUT_CANAL", "channel_store");
 			hmcLogin.get(1).put("AUT_TIPO", "B2BCustomer - Cliente B2B");
-			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0035_LMStore");
+			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0019_LMStore");
 			hmcLogin.get(1).put("AUT_DEPARTAMENTO", "50000425-PROJETO 3D VENDA ASSISTIDA");
 			hmcLogin.get(1).put("AUT_CODIGO_CATEGORIA", "999");
 			hmcLogin.get(1).put("AUT_CODIGO_DEPARTAMENTO", "50000425");
 			hmcLogin.get(1).put("AUT_GESTOR", "51017672");
-			hmcLogin.get(1).put("AUT_LOJA", "0035_LMStore");
+			hmcLogin.get(1).put("AUT_LOJA", "0019_LMStore");
 			hmcLogin.get(1).put("AUT_PERFIL_ACESSO", AUT_HMC_PERFIL_ACESSO.USUARIO_LOJA.name());
 
 
@@ -5813,29 +5844,23 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			//----------------------------------------------------------------------------------------------------------	
 
 
-			//Inclusao de tabela - Tabela de Itens
 			/**
 			 * 
-			 * 
-			 * 
-			 * Parametros para carga dos Itens
-			 * 
+			 *************************************** MASSA DE DADOS - CENÁRIOS PRIORITÁRIOS - VENDAS ASSISTIDAS **********************
 			 * 
 			 */
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			java.util.HashMap<String,java.util.HashMap<String,Object>> itens = new java.util.HashMap<String,java.util.HashMap<String,Object>>();	
-			itens.put("Produto", new java.util.HashMap<String,Object>());
-			//vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get("Produto").put("Quantidade", "FluxoSaida");
+			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			//AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001);
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
 
-			//AUT_IT00004_STVA_ID00004_FRT004_CN00004_CADASTRO_CLIENTE_PF_LOJA0035
+
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_USER", "55000119");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MATERIAL", "89296193");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MATERIAL_QUANTIDADE", "30");
+
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001);
 			
-			// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------			
-
-
-
-
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
