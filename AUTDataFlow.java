@@ -54,20 +54,56 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 	public static java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>> AUT_GLOBAL_PARAMETERS = null;
 
 	public  <TOption extends java.lang.Enum> Object autGetParametersFromTable(TOption nomeTabela, String chave){
-		Object valor = AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(1).get(chave);
+		Object valor = autGetParametersFromTable(nomeTabela).get(chave);
 		return valor;		
 	}
 
-	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela){
-		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(1);		
+	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela,Integer numeroLinha){
+		AUTRuntimeExecutionScenario scn = autGetCurrentScenarioRuntime();
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> paramsOut = null;		
+		if(scn.AUT_SCENARIO_FULL_NAME_RUNTIME!=null) {
+			java.util.regex.Pattern regExp = java.util.regex.Pattern.compile("\\d+");
+			java.util.regex.Matcher verif = regExp.matcher(scn.AUT_PROJECT_ID);
+			scn.AUT_DATAFLOW_SEARCH_KEY = nomeTabela;
+			if(verif.find()) {
+				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO BANCO DE DADOS : INICIO");
+				Integer projId = Integer.parseInt(verif.group());
+				paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);	
+				
+				if(paramsOut==null || paramsOut.size()==0) {
+					if(AUT_GLOBAL_PARAMETERS.containsKey(nomeTabela.toString())) {
+						System.out.println("@@@@AUT INFO: NAO EXISTE PARAMETROS NO BANCO DE DADOS, INICIANDO UPLOAD DO DATAFLOW LOCAL : INICIO");						
+						
+						autGetDataFlowDBIntegration().autUploadDataFlow(AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()), scn);
+						paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);
+						System.out.println("@@@@AUT INFO: NAO EXISTE PARAMETROS NO BANCO DE DADOS, INICIANDO UPLOAD DO DATAFLOW LOCAL : FIM");
+					}
+					else {
+						System.out.println(String.format("@@@@AUT INFO: NAO FOI CONFIGURADO UM FLUXO DE DADOS PARA O PROCESSO AUTOMATIZADO : DB: NAO : LOCAL: NAO : PROCESSO: %s",scn.AUT_SCENARIO_FULL_NAME));						
+					}
+
+				}
+				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO BANCO DE DADOS : FIM");
+
+				return paramsOut.get(numeroLinha);
+			}
+			else {
+				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO DATAFLOW LOCAL");
+				return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(numeroLinha);
+			}			
+		}
+		else {
+			System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO DATAFLOW LOCAL");
+			return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(numeroLinha);
+		}						
 	}
 
 	public  <TOption extends java.lang.Enum> java.util.HashMap<Integer,java.util.HashMap<String,Object>> autGetAllParametersFromTable(TOption nomeTabela){
 		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString());		
 	}
-	
-	public <TOption extends java.lang.Enum<AUT_TABLE_PARAMETERS_NAMES>> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela,Integer line){
-		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(line);				
+
+	public <TOption extends java.lang.Enum<AUT_TABLE_PARAMETERS_NAMES>> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela){
+		return autGetParametersFromTable(nomeTabela,1);				
 	}
 
 
@@ -628,7 +664,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataCadastro.get(1).put("AUT_ENDERECO_PESQUISA", "AUT RUA SERGIPE");
 			vaDataCadastro.get(1).put("AUT_BAIRRO_PESQUISA", "NITEROI");	
 			vaDataCadastro.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			
+
 			vaDataCadastro.get(1).put("AUT_CEP", "92130-270");	
 			vaDataCadastro.get(1).put("AUT_RUA_ENDERECO", "AUT RUA SERGIPE");	
 			vaDataCadastro.get(1).put("AUT_NUMERO_ENDERECO", "256");	
@@ -5860,7 +5896,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MATERIAL_QUANTIDADE", "30");
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001);
-			
+
 			return AUT_GLOBAL_PARAMETERS;
 		}
 		catch(java.lang.Exception e) {
@@ -6006,7 +6042,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		AUT_LOG_MANAGER = new AUTLogMensagem();
 	}
 
-	
+
 	/**
 	 * 
 	 * Limpa a base de dados
