@@ -48,19 +48,50 @@ import br.lry.functions.AUTProjectsFunctions;
  *
  */
 public class AUTDataFlow extends AUTFWKTestObjectBase{
+	public Boolean AUT_ENABLE_SYNCRONIZE_ALL_OBJECTS = false;			
+	public static java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>> AUT_GLOBAL_PARAMETERS = null;
 	AUTLogMensagem AUT_LOG_MANAGER = null;
 	AUTNumerosRandomicos AUT_CURRENT_RANDOM_MANAGER = null;
-	public Boolean AUT_ENABLE_SYNCRONIZE_ALL_OBJECTS = false;	
-	public static java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>> AUT_GLOBAL_PARAMETERS = null;
-
-	public  <TOption extends java.lang.Enum> Object autGetParametersFromTable(TOption nomeTabela, String chave){
-		Object valor = autGetParametersFromTable(nomeTabela).get(chave);
-		return valor;		
+	boolean enableSearchAllScenarios = false;
+	
+	public void autEnableSearchOnDataFlowAllScenario() {
+		enableSearchAllScenarios = true;
 	}
 
+	public void autDisableSearchOnDataFlowAllScenario() {
+		enableSearchAllScenarios = true;
+	}
+	
+	public boolean autIsSearchOnDataFlowAllScenario() {
+		return enableSearchAllScenarios;
+	}
+
+	public  <TOption extends java.lang.Enum> Object autGetParametersFromTable(TOption nomeTabela, String chave,Integer rowIndex){
+		Object valor = autGetParametersFromTable(nomeTabela).get(chave);
+		if(valor==null) {
+			AUTRuntimeExecutionScenario scn = autGetCurrentScenarioRuntime();
+			scn.AUT_DATAFLOW_SEARCH_KEY = nomeTabela;
+			scn.AUT_ENABLE_SEARCH_DATAFLOW_FROM_ALL_SCENARIOS_TO_PROJECT = true;
+			valor = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(scn.autGetIdNumber(), scn).get(rowIndex).get(chave);
+			System.out.println("AUT INFO : O VALOR DO CAMPO É NULO ----> TESTES");
+			
+			return valor;
+		}
+		else {
+			return valor;
+		}		
+	}
+
+	public  <TOption extends java.lang.Enum> Object autGetParametersFromTable(TOption nomeTabela, String chave) {
+		return autGetParametersFromTable(nomeTabela, chave, 1);
+	}
+	
 	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela,Integer numeroLinha){
 		AUTRuntimeExecutionScenario scn = autGetCurrentScenarioRuntime();
-		java.util.HashMap<Integer,java.util.HashMap<String,Object>> paramsOut = null;		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> paramsOut = null;	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> paramsOutDependences = null;
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> paramsOutFull = null;
+
 		if(scn.AUT_SCENARIO_FULL_NAME_RUNTIME!=null) {
 			java.util.regex.Pattern regExp = java.util.regex.Pattern.compile("\\d+");
 			java.util.regex.Matcher verif = regExp.matcher(scn.AUT_PROJECT_ID);
@@ -68,23 +99,24 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			if(verif.find()) {
 				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO BANCO DE DADOS : INICIO");
 				Integer projId = Integer.parseInt(verif.group());
-				paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);	
-				
+
+				scn.AUT_ENABLE_SEARCH_DATAFLOW_FROM_ALL_SCENARIOS_TO_PROJECT = false;
+				paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);			
+
 				if(paramsOut==null || paramsOut.size()==0) {
 					if(AUT_GLOBAL_PARAMETERS.containsKey(nomeTabela.toString())) {
 						System.out.println("@@@@AUT INFO: NAO EXISTE PARAMETROS NO BANCO DE DADOS, INICIANDO UPLOAD DO DATAFLOW LOCAL : INICIO");						
-						
 						autGetDataFlowDBIntegration().autUploadDataFlow(AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()), scn);
-						paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);
+						scn.AUT_ENABLE_SEARCH_DATAFLOW_FROM_ALL_SCENARIOS_TO_PROJECT = false;
+						paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);			
 						System.out.println("@@@@AUT INFO: NAO EXISTE PARAMETROS NO BANCO DE DADOS, INICIANDO UPLOAD DO DATAFLOW LOCAL : FIM");
 					}
 					else {
 						System.out.println(String.format("@@@@AUT INFO: NAO FOI CONFIGURADO UM FLUXO DE DADOS PARA O PROCESSO AUTOMATIZADO : DB: NAO : LOCAL: NAO : PROCESSO: %s",scn.AUT_SCENARIO_FULL_NAME));						
 					}
-
 				}
 				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO BANCO DE DADOS : FIM");
-
+				
 				return paramsOut.get(numeroLinha);
 			}
 			else {
@@ -745,6 +777,8 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.get(1).put("AUT_GESTOR", "51017672");
 			hmcLogin.get(1).put("AUT_LOJA", "0019_LMStore");
 			hmcLogin.get(1).put("AUT_PERFIL_ACESSO", AUT_HMC_PERFIL_ACESSO.USUARIO_LOJA.name());
+			hmcLogin.get(1).put("AUT_PAIS_USUARIO", "Português do Brasil");
+			hmcLogin.get(1).put("AUT_MOEDA_PADRAO", "BRL");
 
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_HMC_LOGIN.toString(), hmcLogin);
@@ -6004,6 +6038,39 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		System.out.println(parametersOut);
 
 		return parametersOut;
+	}
+
+	public <TDataFlowRows extends java.util.HashMap<Integer, java.util.HashMap<String,Object>>> TDataFlowRows autGetMergeParametersDataFlowFromRows(TDataFlowRows tabela1,TDataFlowRows tabela2){
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> paramsOutput = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+
+		for(Integer row: tabela1.keySet()) {
+			if(!paramsOutput.containsKey(row)) 
+			{
+				paramsOutput.put(row, new java.util.HashMap<String,Object>());	
+			}
+			for(String columnName : tabela1.get(row).keySet()) {
+				paramsOutput.get(row).put(columnName, tabela1.get(row).get(columnName));
+			}
+		}
+
+		for(Integer row : tabela2.keySet()) {			
+			for(String columnName : tabela2.get(row).keySet()) {
+				if(paramsOutput.containsKey(row)) {
+					if(!paramsOutput.get(row).containsKey(columnName)) {
+						paramsOutput.get(row).put(columnName, tabela2.get(row).get(columnName));
+					}
+				}
+			}
+		}
+		
+		System.out.println("AUT INFO:  MERGE DE DATAFLOW : TABELA 1");
+		System.out.println(tabela1);
+		System.out.println("AUT INFO:  MERGE DE DATAFLOW : TABELA 2");
+		System.out.println(tabela2);
+		System.out.println("AUT INFO:  MERGE DE DATAFLOW : MERGE : TABELA 1      X      TABELA 2");
+		System.out.println(paramsOutput);
+
+		return (TDataFlowRows) paramsOutput;
 	}
 
 	/**
