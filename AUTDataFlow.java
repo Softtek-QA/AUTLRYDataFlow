@@ -9,6 +9,9 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
+import br.lry.components.AUTBaseComponent.AUTStoreItem.AUT_SELECT_PRODUCT_OPTIONS_BY_STORE;
+import br.lry.components.AUTVABaseComponent;
+import br.lry.components.AUTVABaseComponent.AUTVAFluxosSaidaComponente.FILIAIS;
 import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_LOJAS_ENUM;
 import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_PROFISSOES;
 import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TIPO_CONVENIO;
@@ -25,7 +28,10 @@ import br.lry.components.va.cat010.AUTEdicao.AUT_MANTER_CONDICOES;
 import br.lry.components.va.cat010.AUTEdicao.AUT_STATUS_PESQUISA;
 import br.lry.components.va.cat018.AUTSelecaoLojaBoitata;
 import br.lry.components.va.cat018.AUTSelecaoLojaVA;
+import br.lry.dataflow.AUTDataFlow.AUT_EDICAO_PEDIDO;
+import br.lry.dataflow.AUTDataFlow.AUT_MODO_CONSULTAS_VA_SELECAO_ITEM;
 import br.lry.dataflow.AUTDataFlow.AUT_TABLE_PARAMETERS_NAMES;
+import br.lry.dataflow.AUTDataFlow.AUT_VA_TIPO_DOCUMENTO_PESQUISA;
 import br.lry.functions.AUTProjectsFunctions;
 import br.lry.functions.AUTProjectsFunctions.AUTLogMensagem;
 import br.lry.functions.AUTProjectsFunctions.AUTNumerosRandomicos;
@@ -54,6 +60,52 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 	AUTNumerosRandomicos AUT_CURRENT_RANDOM_MANAGER = null;
 	boolean enableSearchAllScenarios = false;
 	
+	public static enum AUT_MODO_CONSULTAS_VA_SELECAO_ITEM{
+		IMPRESSAO,
+		EXIBICAO_DOCUMENTOS_VINCULADOS,
+		EDICAO,
+		COPIA
+	}
+	/**
+	 * 
+	 * Define as opções para edição de pedidos
+	 * 
+	 * @author Softtek-QA
+	 *
+	 */
+	public static enum AUT_EDICAO_PEDIDO{
+		QUANTIDADE_ITEM_QUANT_ADICIONAR_PADRAO,
+		QUANTIDADE_ITEM_SUBTRAIR_PADRAO,
+		LOJA_ITEM,
+		DEPOSITO_ITEM;
+		
+		@Override
+		public String toString() {
+			switch(this) {
+			case QUANTIDADE_ITEM_QUANT_ADICIONAR_PADRAO:{
+				return "120";
+			}
+			case QUANTIDADE_ITEM_SUBTRAIR_PADRAO:{
+				return "58";
+			}
+			}
+			return this.name();
+		}
+		
+	}
+	
+	public static enum AUT_CONFIRMACAO_USUARIO{
+		SIM,
+		NAO,
+		CANCELAR,
+		CONFIRMAR,
+		EXCLUSAO_ITEM_DESABILITADA,
+		EXCLUIR_ITEM_INDIVIDUAL,
+		EXCLUIR_ITEM_MULTIPLOS_ITENS,
+		EXCLUSAO_GERAL_LIMPAR_CARRINHO,
+		EXCLUIR_ITEM_POR_ATRIB_MATERIAL,
+	}
+	
 	public void autEnableSearchOnDataFlowAllScenario() {
 		enableSearchAllScenarios = true;
 	}
@@ -66,6 +118,24 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		return enableSearchAllScenarios;
 	}
 
+	
+	/**
+	 * 
+	 * Tipo de documento para pesquisa de documento
+	 * 
+	 * @author Softtek - QA
+	 *
+	 */
+	public static enum AUT_VA_TIPO_DOCUMENTO_PESQUISA{
+		CPF_OU_CNPJ,
+		NOME,
+		PASSAPORTE,
+		RG_OU_RNE,
+		RAZAO_SOCIAL,
+		NOME_FANTASIA
+	}
+	
+	
 	public  <TOption extends java.lang.Enum> Object autGetParametersFromTable(TOption nomeTabela, String chave,Integer rowIndex){
 		Object valor = autGetParametersFromTable(nomeTabela).get(chave);
 		if(valor==null) {
@@ -99,8 +169,6 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			if(verif.find()) {
 				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO BANCO DE DADOS : INICIO");
 				Integer projId = Integer.parseInt(verif.group());
-
-				scn.AUT_ENABLE_SEARCH_DATAFLOW_FROM_ALL_SCENARIOS_TO_PROJECT = false;
 				paramsOut = autGetDataFlowDBIntegration().autGetDataFlowFromDataBaseDownload(projId.toString(), scn);			
 
 				if(paramsOut==null || paramsOut.size()==0) {
@@ -114,6 +182,9 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 					else {
 						System.out.println(String.format("@@@@AUT INFO: NAO FOI CONFIGURADO UM FLUXO DE DADOS PARA O PROCESSO AUTOMATIZADO : DB: NAO : LOCAL: NAO : PROCESSO: %s",scn.AUT_SCENARIO_FULL_NAME));						
 					}
+				}
+				else {
+					//********************* TESTE DE UPLOAD DE PARAMETROS ************************
 				}
 				System.out.println("@@@@AUT INFO: CARREGANDO PARAMETROS DO BANCO DE DADOS : FIM");
 				
@@ -770,13 +841,13 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
 			hmcLogin.get(1).put("AUT_CANAL", "channel_store");
 			hmcLogin.get(1).put("AUT_TIPO", "B2BCustomer - Cliente B2B");
-			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0019_LMStore");
+			hmcLogin.get(1).put("AUT_UNIDADE_B2B_PADRAO", "0045_LMStore");
 			hmcLogin.get(1).put("AUT_DEPARTAMENTO", "50000425-PROJETO 3D VENDA ASSISTIDA");
 			hmcLogin.get(1).put("AUT_CODIGO_CATEGORIA", "999");
 			hmcLogin.get(1).put("AUT_CODIGO_DEPARTAMENTO", "50000425");
 			hmcLogin.get(1).put("AUT_GESTOR", "51017672");
-			hmcLogin.get(1).put("AUT_LOJA", "0019_LMStore");
-			hmcLogin.get(1).put("AUT_PERFIL_ACESSO", AUT_HMC_PERFIL_ACESSO.USUARIO_LOJA.name());
+			hmcLogin.get(1).put("AUT_LOJA", "0045_LMStore");
+			hmcLogin.get(1).put("AUT_PERFIL_ACESSO", AUT_HMC_PERFIL_ACESSO.APROVADOR_COMERCIAL.name());
 			hmcLogin.get(1).put("AUT_PAIS_USUARIO", "Português do Brasil");
 			hmcLogin.get(1).put("AUT_MOEDA_PADRAO", "BRL");
 
@@ -5924,11 +5995,39 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
 
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_USER", "55000119");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_USER", "55000045");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_USUARIO_VA", "55000045");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_SENHA_VA", "1234");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MATERIAL", "89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MATERIAL_QUANTIDADE", "30");
-
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_OPCAO_SELECAO_ITEM", AUT_SELECT_PRODUCT_OPTIONS_BY_STORE.STORE.name());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_OPCAO_SELECAO_PARAMETRO", FILIAIS.LJ0045.toString());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_QUANTIDADE_MAXIMA_ITENS", 2);
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MATERIAL_QUANTIDADE", 1);
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_REMOVER_ITENS_CARRINHO", AUT_CONFIRMACAO_USUARIO.SIM.name());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_TIPO_EXCLUSAO_ITEM", AUT_CONFIRMACAO_USUARIO.EXCLUSAO_GERAL_LIMPAR_CARRINHO.name());		
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_PARAMETRO_EXCLUSAO_ITENS", "3");		
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_TIPO_FILTRO_PESQUISA", AUT_VA_TIPO_DOCUMENTO_PESQUISA.CPF_OU_CNPJ.name());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_DOCUMENTO_CLIENTE", "26528652775");//60280476000-LOJA 19 //26528652775
+			
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_CT_MATERIAL_1", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_CT_MATERIAL_2", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_CT_MATERIAL_3", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_CT_MATERIAL_4", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_CT_MATERIAL_5", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "");
+			
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_EDICAO_ITEM_OPCAO", AUT_EDICAO_PEDIDO.QUANTIDADE_ITEM_QUANT_ADICIONAR_PADRAO.name());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_ITENS_EDICAO", "");
+			
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_MODO_CONSULTA_ITEM", AUT_MODO_CONSULTAS_VA_SELECAO_ITEM.EDICAO.name());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_EDIT_ITEM_SELECT", "");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_QUANTIDADE_PADRAO_EDICAO_ITEM_UNITARIO", 25);
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_QUANTIDADE_PADRAO_EDICAO_ITEM_FRACIONADO", 40);
+							
+			
+				
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001);
 
 			return AUT_GLOBAL_PARAMETERS;
