@@ -2643,7 +2643,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001);	
 
-			//---------------------------------------------------------------------------------------------------------	
+			//--------------------------------------------------------------------------------------------------------	
 
 			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001
 			/**
