@@ -1096,8 +1096,8 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001);
-			
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001
+			//-------------------------------------------------------------------------------
+			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001
 			/**
 			 * 
 			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
@@ -1119,8 +1119,38 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
 
 			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001);
+			//--------------------------------------------------------------------------------------------
+			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001
+			/**
+			 * 
+			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
+			 * 
+			 */
+
+			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_USER","55000045");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+			
+
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
+			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
 			
 			
+			
+			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001);
+			
+			//------------------------------------------------------------------------------------------------
 
 
 			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000001_CTR00001
