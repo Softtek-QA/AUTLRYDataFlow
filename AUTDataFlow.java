@@ -3,16 +3,6 @@
  */
 package br.lry.dataflow;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.HashMap;
-
-import org.junit.Test;
-
-import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_LOJAS_ENUM;
-import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_PROFISSOES;
-import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TIPO_CONVENIO;
-import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TYPE_PERSONS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_CADASTROS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_ESTADOS;
 import br.lry.components.va.AUTVACadastros.AUT_VA_TIPO_CONTATO;
@@ -28,18 +18,19 @@ import br.lry.components.va.cat010.AUTEdicao.AUT_STATUS_PESQUISA;
 import br.lry.components.va.cat018.AUTSelecaoLojaBoitata;
 import br.lry.components.va.cat018.AUTSelecaoLojaVA;
 import br.lry.components.va.cat018.AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS;
-import br.lry.dataflow.AUTDataFlow.AUT_TABLE_PARAMETERS_NAMES;
 import br.lry.functions.AUTProjectsFunctions;
 import br.lry.functions.AUTProjectsFunctions.AUTLogMensagem;
 import br.lry.functions.AUTProjectsFunctions.AUTNumerosRandomicos;
-import br.lry.functions.AUTProjectsFunctions.AUT_TIPO_LOJA;
-import br.stk.framework.db.management.AUTDBProcessDataFlow;
-import br.stk.framework.db.management.AUTDBProcessDataFlow.AUT_SQL_OPERATIONS_PROCESS_PARAMETERS;
-import br.stk.framework.db.management.AUTDBProcessDataFlow.AUT_SQL_PROPERTIES;
-import br.stk.framework.db.management.AUTDBProcessDataFlow.AUT_TYPE_FIELD_DATAFLOW;
-import br.stk.framework.db.transactions.AUTJDBCProcess.AUT_TYPE_SQL_OPERATIONS;
 import br.stk.framework.tests.AUTFWKTestObjectBase;
-import br.lry.functions.AUTProjectsFunctions;
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_LOJAS_ENUM;
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_PROFISSOES;
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TIPO_CONVENIO;
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_TYPE_PERSONS;
+
+import java.lang.reflect.Method;
+
+import br.lry.components.safe.AUTSafeBaseComponent.AUT_SAFE_COUNTRY;
+
 
 
 /**
@@ -61,58 +52,42 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		return valor;		
 	}
 
-	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela){
-		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(1);		
-
-	}
+//	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela){
+//		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(1);		
+//
+//	}
 
 	public <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela,Integer line){
 		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(line);				
 	}
-
-
-	/**
-	 * Executa procedimentos para copi de dados de um hash map orirgem para o destino especificado
-	 * 
-	 * 
-	 * @param dataFlowOrig - Dataflow de origem 
-	 * @param dataFlowDest - Dataflow de destino dos dados
-	 * 
-	 * @return AUTDataFlow - Objeto resultante do merge de dados entre estruturas
-	 * 
-	 */
-	public AUTDataFlow autCopyDataFlow(AUTDataFlow dataFlowOrig,AUTDataFlow dataFlowDest) {
+	
+	//***********************************************
+	public  <TOption extends java.lang.Enum> java.util.HashMap<String,Object> autGetParametersFromTable(TOption nomeTabela){
 		try {
-			System.out.println("AUT INFO: DATAFLOW : COPY DATA : INIT");
-			System.out.println("BEFORE : DATA FLOW ORIG:");
-			System.out.println(dataFlowOrig);
-			System.out.println("BEFORE : DATA FLOW DEST:");
-			System.out.println(dataFlowDest);
-
-			for(String keyTable : dataFlowOrig.AUT_GLOBAL_PARAMETERS.keySet()) {
-				if(dataFlowDest.AUT_GLOBAL_PARAMETERS.containsKey(keyTable)) {
-					dataFlowDest.AUT_GLOBAL_PARAMETERS.remove(keyTable);
-					dataFlowDest.AUT_GLOBAL_PARAMETERS.put(keyTable, dataFlowOrig.AUT_GLOBAL_PARAMETERS.get(keyTable));
-				}
-			}
-
-			System.out.println("AFTER : DATA FLOW ORIG:");
-			System.out.println(dataFlowOrig);
-			System.out.println("AFTER : DATA FLOW DEST:");
-			System.out.println(dataFlowDest);
-
-			System.out.println("AUT INFO: DATAFLOW : COPY DATA : END");
-			return dataFlowDest;
-		}
-		catch(java.lang.Exception e) {
-			System.out.println("AUT ERRO: DATAFLOW : COPY DATA");
+		String nomeHashMap = nomeTabela.toString();
+    	
+		Class[] parameterTypes = new Class[1];
+		parameterTypes[0] = String.class;
+		
+		//AUTDataFlow.class.getMethod(nomeHashMap, parameterTypes);
+		
+	      //Method[] methods = AUTDataFlow.class.getMethods();
+	      AUTDataFlow dataFlowObject = new AUTDataFlow();
+	      //methods[1].invoke(dataFlowObject, nomeHashMap);
+	     
+			Method createMethod = AUTDataFlow.class.getMethod(nomeHashMap, new Class[0]);
+			createMethod.invoke( dataFlowObject, new Object[0] ); 
+	      
+		
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();			
-
-			return null;
 		}
+		return AUT_GLOBAL_PARAMETERS.get(nomeTabela.toString()).get(1);		
+
 	}
 	
+	//***********************************************
+
 	public enum AUT_VA_OPCAO_LOJA_FLUXO_SAIDA{
 		LOJA_0019,
 		CD_0019,
@@ -143,18 +118,18 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		}
 	}
 	
-	/**
-	 * 
-	 * Define os tipos de ambientes disponiveis na fábrica de testes
-	 * 
-	 * @author Softtek-QA
-	 *
-	 */
-	public enum AUT_TIPO_AMBIENTE{
-		HOMOLOG,
-		HOMOLOG2,
-		DESENVOLVIMENTO
-	}
+//	/**
+//	 * 
+//	 * Define os tipos de ambientes disponiveis na fábrica de testes
+//	 * 
+//	 * @author Softtek-QA
+//	 *
+//	 */
+//	public enum AUT_TIPO_AMBIENTE{
+//		HOMOLOG,
+//		HOMOLOG2,
+//		DESENVOLVIMENTO
+//	}
 
 	public enum AUT_HMC_PERFIL_ACESSO{
 		USUARIO_LOJA,
@@ -470,6 +445,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		RSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001,
 		RSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001,
 		RSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001,
+<<<<<<< HEAD
 		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00001,
 		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00002,
 		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00003,
@@ -545,6 +521,83 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00001,
 		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00002,
 		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00003,
+=======
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00004,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00005,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT001_CMP00006,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT002_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT002_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT002_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT003_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT003_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT003_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT004_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT005_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT005_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00004,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00005,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00006,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00007,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT006_CMP00008,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00004,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00005,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00006,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00007,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00008,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00009,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00010,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT007_CMP00011,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT008_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT008_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT008_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00004,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00005,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00006,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00007,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00008,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00009,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00010,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00011,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00012,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT009_CMP00013,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT010_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT011_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT011_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00004,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00005,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00006,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00007,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT012_CMP00008,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT013_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT014_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT014_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT014_CMP00003,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT015_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT015_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT016_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT016_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT017_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT017_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT018_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00001,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00002,
+//		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00003,
+>>>>>>> branch 'new_develop' of https://github.com/Softtek-QA/AUTLRYDataFlow.git
 		RSP_PJTTRC_FRT001_VA_CMP_CAT019_CMP00004 ;	
 
 		@Override
@@ -612,6724 +665,7128 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 
 	public java.util.HashMap<String,
 	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> autInitDataFlow() {
-		if(AUT_ENABLE_SYNCRONIZE_ALL_OBJECTS) {
-			return autInitDataFlowConfiguration(AUT_ENABLE_SYNCRONIZE_ALL_OBJECTS);
-		}
-		else {
-			return autInitDataFlowConfiguration(AUT_ENABLE_SYNCRONIZE_ALL_OBJECTS);
-		}
-	}
 
+		if (AUT_GLOBAL_PARAMETERS==null)
+			AUT_GLOBAL_PARAMETERS = new java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>();
+						
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+
+//*****************************************
+
+	String cnpj = AUTProjectsFunctions.gerarCNPJ();
+	String cpf = AUTProjectsFunctions.gerarCPF();
+	String cpfEstrangeiro = AUTProjectsFunctions.gerarCPF(); // 
+	String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro(); // arrumar função para gerar um cod no formato XX1111
+	
+	
+// ************************ INI ENTREGA 01 *****************************
 
 	/**
 	 * 
-	 * Carrega os parametros de inicialização padrão para todo sistema
-	 * 
-	 * @return dicionarioDeDados - por tabela
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 1 - VA
 	 * 
 	 */
 	public java.util.HashMap<String,
-	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> autInitDataFlowConfiguration(boolean syncronizeAllObject) {
-		try {
-			AUT_CURRENT_RANDOM_MANAGER = new AUTNumerosRandomicos();
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
 
-			AUT_GLOBAL_PARAMETERS = 
-					(
-							syncronizeAllObject 
-							? 
-									new java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>() 
-									: 
-										(
-												AUT_GLOBAL_PARAMETERS==null ? 
-														new java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>() 
-														: 
-															AUT_GLOBAL_PARAMETERS
-												)
-							);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001);
 
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.put(1, new java.util.HashMap<String,Object>());
 
-			/**
-			 * 
-			 * Configuração de parametros para o login
-			 * 
-			 */
-			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
-			vaDataLogin.get(1).put("AUT_USER", "55000035");//"55000001");
-			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
-			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");			
-			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_COORDENADOR", "51028487");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004);
 
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 3 - SAP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.put(1, new java.util.HashMap<String,Object>());
 
-			//Inclusao de tabela - Pedidos
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de login sistema HMC
-			 * 
-			 * 
-			 */
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("USER_SAP", "51024057");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("PWD_SAP", "fielpalavradeus");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_NUMERO_PEDIDO", "");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_LOJA", "0019");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_DATA_INICIAL", "10.06.2019");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_DATA_FINAL", "20.06.2019");			
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataCadastro = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.toString(),sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005);
 
-			vaDataCadastro.put(1, new java.util.HashMap<String,Object>());
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006);
 
-			vaDataCadastro.put(1, new java.util.HashMap<String,Object>());
-			String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro();
-			String cnpj = AUTProjectsFunctions.gerarCNPJ();
-			String cpf = AUTProjectsFunctions.gerarCPF();
-			String cpfEstrangeiro = AUTProjectsFunctions.gerarCPF();
-			String inscricaoEstadual = AUTProjectsFunctions.autGetIncriptionPR();
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 4 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN000003_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.put(1, new java.util.HashMap<String,Object>());
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_CODIGO_ITEM", "89407066");								
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_COORDENADOR", "51028487");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_DDD", "11");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_TELEFONE", "912123434");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 4 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008);
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 5 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.get(1).put("USER_SAFE", "51032901");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.get(1).put("PWS_SAFE", "#u5051s7923");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009);
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_USER","55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");							
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_COORDENADOR", "51028487");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 3 - SAP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("USER_SAP", "51024057");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("PWD_SAP", "fielpalavradeus");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_NUMERO_PEDIDO", "");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_LOJA", "0019");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_DATA_INICIAL", "10.06.2019");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_DATA_FINAL", "20.06.2019");			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.toString(),sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 4 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.put(1, new java.util.HashMap<String,Object>());
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_CODIGO_ITEM", "89407066");								
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_COORDENADOR", "51028487");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_DDD", "11");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_TELEFONE", "912123434");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 4 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN002 parte 5 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009() {
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.get(1).put("USER_SAFE", "51028487");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.get(1).put("PWS_SAFE", "Auto5@2017");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009);			
 			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CNPJ", cnpj);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_FANTASIA", "Teste Fantasia");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "135.540.076.562");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCNPJ()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_TELEFONE","CELULAR");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "São Paulo");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Morumbi");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "Morumbi");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CEP", "05606-200");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Avenida Morumbi");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Morumbi");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "São Paulo");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO","ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-
-
-			
-			//Ajustar dados desse dataflow
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001);
-
-					
-						
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN000004_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro PF
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CPF", cpf);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CEP", "09720-971");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");	
-
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN000005_CTR00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de cadastro pessoa estrangeira
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18.783.107/6918-63");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CPF_ESTRANGEIRO", cpfEstrangeiro);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_SEXO", "Feminino");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NASCIMENTO", "04/03/1990");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_ESTRANGEIRO", String.format("AUT NOME ESTRANG: %s : CPF EST: %s",codEstrangeiro,cpfEstrangeiro));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PJ:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "AUT NOME PJ 2:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÃ‰SIA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CEP", "07776-000");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "EXPLANADA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIÃšVA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CEP_2", "06013-006");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_RUA_ENDERECO_2", "Rua AntÃ´nio AgÃº");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_ENDERECO_2", "256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO_2", "Centro");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO_2", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CIDADE_ENDERECO_2", "Osasco");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_ESTADO_ENDERECO_2", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO_2", "Loja Sabaroa");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA_2", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CNPJ_INVALIDO", "37.764.388/0009-90");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CPF_INVALIDO", "510.354.523-93");	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CEP_INVALIDO", "12345678");
-
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP1
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro PF Varios Telefones
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CPF", cpf);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_TELEFONE2", AUT_VA_TIPO_CONTATO.TELEFONE_FIXO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_TELEFONE2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CEP", "09720-971");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP1
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro PF com CPF previamente cadastrado
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.get(1).put("AUT_CPF", "65181318452"); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001);
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN000008_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_USER","55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001);
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP1
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro PF Não sei CEP
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CPF", cpf);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_TELEFONE2", AUT_VA_TIPO_CONTATO.TELEFONE_FIXO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_TELEFONE2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CEP", "09720-971");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001);
-
-			
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP1
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro PF com CPF invalido
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.get(1).put("AUT_CPF_INVALIDO", "12312312312");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP1
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro cliente com CEP invalido
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_CEP", "00001-007");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001);			
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP1
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente cadastro PF Varios Enderecos
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_CEP", "09720-971");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_CEP2", "09890-140");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001);			
-			
-			
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_USER","55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_CNPJ", "11.201.090/0001-03");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001);
-			//-------------------------------------------------------------------------------
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_USER","55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001);
-			//--------------------------------------------------------------------------------------------
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_USER","55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
-			
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001);
-			
-			//--------------------------------------------------------------------------------------------
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_USER","55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
-			
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001);
-
-			
-			//------------------------------------------------------------------------------------------------
-
-			//--------------------------------------------------------------------------------------------
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_USER","55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
-			
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001);
-
-			
-			//------------------------------------------------------------------------------------------------
-
-			//--------------------------------------------------------------------------------------------
-			//Inclusao de tabela - vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001
-			/**
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_USER","55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA_EXCECAO", "EIT");
-			
-			
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001);
-
-			
-			//------------------------------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000001_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_USER","55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001);		
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM","1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);                               
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");                
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001);
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_TELEFONE_SERVIÇO", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);  
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");          
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001);
-
-			//Criar carrinho no VA Hybris - RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_VALIDADE", "09/23");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "183");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_CARRINHO","");
-			
-				AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001);
-
-
-			// Realizar um pedido atravÃ©s da recuperaÃ§Ã£o do carrinho - RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_VALIDADE", "09/23");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "183");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NUMERO_CARRINHO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001);			
-
-
-			
-
-			//Criar carrinho no VA Hybris - RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_CODIGO_ITEM","89411714");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_VALIDADE", "04/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_USER_APROVADOR","55230148");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001);
-
-
-			// Realizar um pedido atravÃ©s da recuperaÃ§Ã£o do carrinho - RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_VALIDADE", "09/23");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "183");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_CARRINHO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001);			
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193;\n 89296193;\n 89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001);		
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000010_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
-			
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-//
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CPF", cpf);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÃ‰SIA");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-//
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CEP", "07776-000");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "EXPLANADA");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIÃšVA");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-//
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001);		
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000011_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_USER","55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		return AUT_GLOBAL_PARAMETERS;
+	}
 
 	
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000013_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_CODIGO_ITEM","89576445");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001);		
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000014_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_USER","55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89576445");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000008_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_USER","55708317"); //55000035
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");//42942711833
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001);
-
-
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001);
-
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_USER", "55000119"); //55708317
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_DESCONTO", "9");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066 85617833
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_DESCONTO", "700,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001);
-			
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_USER", "55000045"); //5576316456068   55001063   550522446 55300745
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_USER", "55708317"); //55300745 5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "85617833"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_USER", "55000045"); //55708317 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283  94288636370
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_DESCONTO", "10");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);//aqui
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89249286"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_DESCONTO", "200,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_TIPO_DESCONTO", AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001);
-
-
-
-
-
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_USER", "51030887"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001
-			/**
-			 * 
-			 * 			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_USER", "55300745");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_DESCONTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_USER", "55300745");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "385261679");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_MOTIVO_DESCONTO_FRETE.ATRASO_NA_ENTREGA_DE_PEDIDO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_TIPO_DESCONTO","PORCENTAGEM");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_DESCONTO","10");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_VALIDADE", "09/18");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);  
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_2X);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89388684"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);  
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_USER", "55300745");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_USER", "55300745");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_DESCONTO", "80");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_USER", "55230148");  //55000035
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");//89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //42942711833
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_TELEFONE_SERVICO", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);  
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000040_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_USER", "55000119"); //51013346  55000035
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89391260 89576445
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183    
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);   
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001);		
-
-			//----------------------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.EXPRESSA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.ECONOMICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001() {
 		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
 
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_USER", "55000035"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_2X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //85617833
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_VALIDADE", "05/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_USER", "55001063"); //55001063 11013231
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //85617833
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001);	
-
-			//---------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_USER", "55000035");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CHEQUE);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001);	
-
-			//---------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_USER", "11013200"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "68691640456"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VALE_TROCA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00756375");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
 		
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001);
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001);
 
-			//---------------------------------------------------------------------------------------------------------				
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN001 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.put(1, new java.util.HashMap<String,Object>());
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");						
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_COORDENADOR", "51028487");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003);
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004);
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_USER", "11013200"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_CODE_VOUCHER","6394422000000293143");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 3 - SAP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001);
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.put(1, new java.util.HashMap<String,Object>());
 
-			//---------------------------------------------------------------------------------------------------------				
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("USER_SAP", "51024057");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("PWD_SAP", "fielpalavradeus");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_NUMERO_PEDIDO", "");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_LOJA", "0019");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_DATA_INICIAL", "10.06.2019");	
+		sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_DATA_FINAL", "20.06.2019");				
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.toString(),sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006);
 
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 4 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * 
-			 */
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.put(1, new java.util.HashMap<String,Object>());
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_CODIGO_ITEM", "89407066");								
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_COORDENADOR", "51028487");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_DDD", "11");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_TELEFONE", "912123434");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007);
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 4 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN003 parte 5 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.get(1).put("USER_SAFE", "51028487");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.get(1).put("PWS_SAFE", "Auto5@2017");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009);
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_USER", "55000045");  //55000035
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODIGO_ITEM","85617833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM_VA", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //42942711833
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_EAN_OR_CODE","89455163");
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN004 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN004 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");							
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_PWS_COORDENADOR", "51013346");
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN004 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN004 parte 3 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89407066");								
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_COORDENADOR", "51013346");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_PWS_COORDENADOR", "51013346");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_DDD", "11");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_TELEFONE", "912123434");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN004 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN004 parte 4 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.get(1).put("USER_SAFE", "51028487");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.get(1).put("PWS_SAFE", "Auto5@2017");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007);		
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN005 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN005 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");							
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");				
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_PWD_COORDENADOR", "51013346");
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN005 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN005 parte 3 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_OPERADOR", "951030887");			
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89407066");								
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_COORDENADOR", "51013346");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_PWD_COORDENADOR", "51013346");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_DDD", "11");	
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_TELEFONE", "912123434");		
+		pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN005 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_USER", "55000019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN005 parte 4 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.get(1).put("USER_SAFE", "51028487");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.get(1).put("PWS_SAFE", "Auto5@2017");
+		vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN006 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00001);
+		 
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN006 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");       
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");    
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_PWD_COORDENADOR", "51013346");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.JURIDICA);
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00003);
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN006 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		   
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN006 parte 3 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89407066");        
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_PWD_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_DDD", "11"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_TELEFONE", "912123434");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.JURIDICA);
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863");    
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00006_CTP00005);
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN006 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00006_CTP00006);
+		 
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN006 parte 4 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007.get(1).put("USER_SAFE", "51032901");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007.get(1).put("PWS_SAFE", "#u5051s7923");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00006_CTP00007);     
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN007 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN007 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");       
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");    
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_PWD_COORDENADOR", "51013346");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.FISICA);
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00003);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN007 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		   
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN007 parte 3 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89407066");        
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_COORDENADOR", "51013346");    
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_PWD_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_DDD", "11"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_TELEFONE", "912123434");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.FISICA);
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");    
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00007_CTP00005);
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN007 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00007_CTP00006);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN007 parte 4 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007.get(1).put("USER_SAFE", "51032900");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007.get(1).put("PWS_SAFE", "Softtek01");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00007_CTP00007);  
+		 
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN008 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001() {
+
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "22025");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN008 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");       
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");    
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_PWD_COORDENADOR", "51013346");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.ESTRANGEIRO);
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00003);
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN008 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		   
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "22025"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN008 parte 3 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005() {
+		
+		 java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89407066");        
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_PWD_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_DDD", "11"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_TELEFONE", "912123434");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.ESTRANGEIRO);
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.get(1).put("AUT_NUMERO_DOCUMENTO", "22025");    
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00008_CTP00005);
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN008 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "22025"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00008_CTP00006);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN008 parte 4 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007.get(1).put("USER_SAFE", "51032900");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007.get(1).put("PWS_SAFE", "Softtek01");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "22025"); 
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00008_CTP00007);  
+		   
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN009 parte 1 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN009 parte 2 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89407066");         
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");    
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_PWD_COORDENADOR", "51013346");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.JURIDICA);
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00003);
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN009 parte 2 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		   
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00004);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN009 parte 3 - PDV
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>(); 
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.put(1, new java.util.HashMap<String,Object>());
+
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_OPERADOR", "951030887");   
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89407066");        
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_PWD_COORDENADOR", "51013346"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_DDD", "11"); 
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_TELEFONE", "912123434");  
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_TIPO_PESSOA",AUT_VA_CADASTROS.JURIDICA);
+		  pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863");    
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00009_CTP00005);
+		     
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN009 parte 3 - VA
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.get(1).put("AUT_USER", "55000019");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.get(1).put("AUT_PASSWORD", "1234");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
+		  vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00009_CTP00006);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN009 parte 4 - SAFE
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007.put(1, new java.util.HashMap<String,Object>());
+		 
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007.get(1).put("USER_SAFE", "51032900");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007.get(1).put("PWS_SAFE", "Softtek01");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00009_CTP00007);  
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN010 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("USER_SAFE", "51032901");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("PWS_SAFE", "#u5051s7923");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_TIPO_PESSOA", AUT_SAFE_TYPE_PERSONS.FISICA2 );
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_TIPO_CONVENIO", AUT_SAFE_TIPO_CONVENIO.ACORDO_EXTRAJUDICIAL );
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_PROFISSAO", AUT_SAFE_PROFISSOES.ARQUITETO );
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_DOCUMENTO", "84276517915");
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_PF_RG", "84276517915");                   
+		  vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_ORG_EMISSOR", "SSP" ); 
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_DATA_NASCIMENTO","01/01/1985");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_NOME", "José da Silva" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_CLIENTE_NOME", "José da Silva" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_EMAIL", "jsqa@automacaoo.com" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_LOGRADOURO", "Rua Sem Nome");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "0");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "Fundos");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_BAIRRO", "Jaguare");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_CEP","05319-000");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_CIDADE","Sao Paulo");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_UF", "SP");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_TEL_DD1", "11");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_TEL_FONE1","19855555");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_TEL_RAMAL1","");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_VALOR_VOUCHER", 1000 );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_LOJA", AUT_SAFE_LOJAS_ENUM.LJ0019);
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.get(1).put("AUT_OBSERVACOES", "Criação de voucher Pessoa Física ----------------------------------------------------------.");
+
+	  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00010_CTP00001);  
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN011 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("USER_SAFE", "51032901");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("PWS_SAFE", "#u5051s7923");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_TIPO_PESSOA", AUT_SAFE_TYPE_PERSONS.JURIDICA2 );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_TIPO_CONVENIO", AUT_SAFE_TIPO_CONVENIO.ACORDO_EXTRAJUDICIAL );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_PROFISSAO", AUT_SAFE_PROFISSOES.DECORADOR );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_DOCUMENTO", AUTProjectsFunctions.gerarCNPJ());
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_NOME_PJ", "Delacroix Decoradora" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_EMAIL", "dqa@automacao.com" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_LOGRADOURO", "Rue Saint Saens");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "1");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_BAIRRO", "Champs Elisee");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_CEP","75001");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_CIDADE","Paris");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_UF", "SP");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_TEL_DD1", "55");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_TEL_FONE1","19855555");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_TEL_RAMAL1","");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_VALOR_VOUCHER", 10000 );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_LOJA", AUT_SAFE_LOJAS_ENUM.LJ0019);
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.get(1).put("AUT_OBSERVACOES", "Criação de voucher Pessoa Jurídica ----------------------------------------------------------.");
+
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00011_CTP00001);  
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 01 - CEN012 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001() {
+		
+		  java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+		  
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("USER_SAFE", "51032901");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("PWS_SAFE", "#u5051s7923");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_TIPO_PESSOA", AUT_SAFE_TYPE_PERSONS.ESTRANGEIRO );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_TIPO_CONVENIO", AUT_SAFE_TIPO_CONVENIO.ACORDO_EXTRAJUDICIAL );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_PROFISSAO", AUT_SAFE_PROFISSOES.ENGENHEIRO );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_TIPO_DOC", AUT_SAFE_TYPE_PERSONS.PASSAPORTE);                      
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_DATA_NASCIMENTO","01/01/1985");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_PAIS_ORIGEM",  AUT_SAFE_COUNTRY.FRANCA );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_DOCUMENTO", "FR1234");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_CLIENTE_NOME", "Jean Pierre Delacroix" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_DATA_NASCIMENTO","01/01/1985");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_EMAIL", "asqa@automacaoo.com" );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_LOGRADOURO", "Rue des Artistes");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "1");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_BAIRRO", "Saint-Chamond");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_CEP","750001");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_CIDADE","Paris");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_UF", "SP");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_TEL_DD1", "32");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_TEL_FONE1","19855555");
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_TEL_RAMAL1",""); 
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_VALOR_VOUCHER", 1000 );
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_LOJA", AUT_SAFE_LOJAS_ENUM.LJ0019);
+          vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.get(1).put("AUT_OBSERVACOES", "Criação de voucher Pessoa Estrangeira ----------------------------------------------------------.");
+
+		  
+		  AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00012_CTP00001);  
+		  
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+// ************************ FIM ENTREGA 01 *****************************
+
+	
+// ************************ INI ENTREGA 02 *****************************
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN003
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_USER","55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CNPJ", cnpj);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_FANTASIA", "Teste Fantasia");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_EMAIL", "EMAIL.QA." + cnpj + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "135.540.076.562");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", "ISENTO");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", "ISENTO");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA." + cnpj + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_TELEFONE","CELULAR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "São Paulo");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Morumbi");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "Morumbi");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CEP", "05606-200");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Avenida Morumbi");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Morumbi");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "São Paulo");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO","ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00003_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN004
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CPF", cpf);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CPF", cpf);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_EMAIL", "EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CEP", "09720-971");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00004_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN005
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18.783.107/6918-63");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CPF_ESTRANGEIRO", cpfEstrangeiro);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_SEXO", "Feminino");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NASCIMENTO", "04/03/1990");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_ESTRANGEIRO", String.format("AUT NOME ESTRANG: %s : CPF EST: %s",codEstrangeiro,cpfEstrangeiro));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PJ:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "AUT NOME PJ 2:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_EMAIL", "EMAIL.QA." + cpfEstrangeiro + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA." + cpfEstrangeiro + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÃ‰SIA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CEP", "07776-000");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "EXPLANADA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIÃšVA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CEP_2", "06013-006");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_RUA_ENDERECO_2", "Rua AntÃ´nio AgÃº");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_NUMERO_ENDERECO_2", "256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO_2", "Centro");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO_2", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CIDADE_ENDERECO_2", "Osasco");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_ESTADO_ENDERECO_2", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO_2", "Loja Sabaroa");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA_2", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CNPJ_INVALIDO", "37.764.388/0009-90");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CPF_INVALIDO", "510.354.523-93");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.get(1).put("AUT_CEP_INVALIDO", "12345678");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00005_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN006
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CPF", cpf);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_EMAIL","EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_TELEFONE2", AUT_VA_TIPO_CONTATO.TELEFONE_FIXO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_TELEFONE2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CEP", "09720-971");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00006_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN007
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.get(1).put("AUT_CPF", "65181318452"); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00007_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN008
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_USER","55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00008_CTP00001);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN009
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CPF", cpf);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_EMAIL", "EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_TELEFONE2", AUT_VA_TIPO_CONTATO.TELEFONE_FIXO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_TELEFONE2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CEP", "09720-971");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00009_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN010
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.get(1).put("AUT_CPF_INVALIDO", "12312312312");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00010_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN011
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_CEP", "00001-007");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00011_CTP00001);			
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN012
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_CPF", cpf);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_EMAIL", "EMAIL.QA." + cpf + "@TESTE.COM.BR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_CEP", "09720-971");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_CEP2", "09890-140");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00012_CTP00001);			
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN013
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_USER","55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.get(1).put("AUT_CNPJ", "11.201.090/0001-03");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00013_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN014
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_USER","55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00014_CTP00001);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN015
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_USER","55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
+		
+		//estava apontando para cn0014, entao coloquei aqui os mesmos dados utilizados la. Se algo faltar, olhar dataflow bkp
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00015_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN016A
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_USER","55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN016B
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_USER","55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
+	
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00016A_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00016B_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 02 - CEN017
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_USER","55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "EIT");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NOME_COMPLETO","LUIZIANA");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_EMAIL", "luziana@gmail.com");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "11 982020206");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_TIPO_TELFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_CNPJ", "10.943.648/0001-55");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA_EXCECAO", "EIT");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00000_CN00017_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+// ************************ FIM ENTREGA 02 *****************************
+	
+	
+	
+// ************************ INI ENTREGA 03 *****************************
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN001
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA","Loja | Porto Alegre"); //LM_0045_SAO_BERNARDO_DO_CAMPO
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN002
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_USER", "55001063"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
 			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001);
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001);
+	
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN003
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001() {
 
-			//---------------------------------------------------------------------------------------------------------				
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_USER", "55436723"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "120");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO); 		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD); // VISA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN004
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001() {
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_USER", "55001063 "); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", ""); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());			
 
-			//---------------------------------------------------------------------------------------------------------				
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_USER", "55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString()); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN005
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00005_CTP00001() {
+		
+		// O script está usando o dataflow do cen0004 acima.
+		return AUT_GLOBAL_PARAMETERS;
+	}
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN007
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString()); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_USER", "55436723"); //55001063
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "120");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_CODIGO_ITEM", "86470475"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283  89716885000133
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_USER_APROVADOR","55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_CANAL","Televendas");	
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN008
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_USER","55708317"); //55000035
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");//42942711833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN009 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODE_VOUCHER","6394422000000293143");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN009 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_USER", "55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_CODIGO_ITEM","89411714");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString()); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_USER_APROVADOR","55230148");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN010	
+	 *  
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO .toString()); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_USER", "55436723"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89411714"); //89407066 89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_USER_APROVADOR","55230148");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");			
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN011
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_USER", "55001063"); //55001063
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89573176"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_CODE_VOUCHER",".*\\\\d{19}");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+				
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN012
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.put(1, new java.util.HashMap<String,Object>());
 
 
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_USER", "pedroantonioagostinho4@gmail.com");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_PASSWORD", "Leroy123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_CODIGO_ITEM","85101184");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_REGIAO_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_REGIAO.SP_SAO_PAULO_REGIAO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_VALIDADE", "12/2019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_CEP", "05424-004");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua ButantÃ£");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "225");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Pinheiros");	
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001);	
-
-			//--------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_CODIGO_ITEM","87489164");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_VALIDADE", "12/2019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_CEP", "05424-004");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua ButantÃ");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "225");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Pinheiros");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001);	
-
-			//---------------------------------------------------------------------------------------------------------	
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000056_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CPF", cpf);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CEP", "09720-971");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE .toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89590473"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_USER_EDITOR", "55436723"); //usar usuário de  televendas
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_DESCONTO", "5,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
 			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001);		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN013
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_USER", "55000119"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89590473"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_DESCONTO", "5,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_USER_EDITOR","55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN014 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89590473");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_USER_EDITOR","55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN014 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.put(1, new java.util.HashMap<String,Object>());
 
 
-			//---------------------------------------------------------------------------------------------------------				
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_CODIGO_ITEM","89590473");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_USER_EDITOR","55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
 
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000057_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN015 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001() {
 
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "336.250.296.224");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_USER", "55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","85617833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");			
 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CNPJ", cnpj);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_FANTASIA", AUT_VA_CADASTROS.JURIDICA_ATUALIZACAO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "135.540.076.562");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCNPJ()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_TELEFONE","CELULAR");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "São Paulo");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Morumbi");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "Morumbi");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CEP", "05606-200");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Avenida Morumbi");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Morumbi");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "São Paulo");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO","ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN015 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_USER", "55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_CODIGO_ITEM","85617833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN016 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN016 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_USER", "55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN017 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_USER","55436723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_PASSWORD","1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM","2");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+		
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN017 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_USER","55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_PASSWORD","1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM","2");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 03 - CEN018
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+// ************************ FIM ENTREGA 03 *****************************
+	
+	
+// ************************ INI ENTREGA 04 *****************************	
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN001 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_USER","55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN001 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00001_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN002
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00002_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN003 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001() {
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM","1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);                               
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");                
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00003_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN004 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_TELEFONE_SERVIÇO", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);  
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");          
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
 			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001);		
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN000058_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18.783.107/6918-63");  //  4294271183
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CPF_ESTRANGEIRO", cpfEstrangeiro);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_SEXO", "Feminino");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NASCIMENTO", "04/03/1990");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_ESTRANGEIRO", String.format("AUT NOME ESTRANG: %s : CPF EST: %s",codEstrangeiro,cpfEstrangeiro));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PJ:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "AUT NOME PJ 2:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÃ‰SIA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CEP", "07776-000");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "EXPLANADA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIÃšVA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CEP_2", "06013-006");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_RUA_ENDERECO_2", "Rua AntÃ´nio AgÃº");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_ENDERECO_2", "256");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO_2", "Centro");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO_2", "CASA 123");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CIDADE_ENDERECO_2", "Osasco");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_ESTADO_ENDERECO_2", AUT_VA_ESTADOS.SP);	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO_2", "Loja Sabaroa");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA_2", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CNPJ_INVALIDO", "37.764.388/0009-90");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CPF_INVALIDO", "510.354.523-93");	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CEP_INVALIDO", "12345678");
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001);		
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_USER", "55000035");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_VALIDADE", "09/18");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);    
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_CODIGO_ITEM", " 85617833"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85023484"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_FILIAL_ESTOQUE","0035 - LOJA CURITIBA ATUBA");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_USER", "55000045"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1); 			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_FILIAL_ESTOQUE","0019 - PORTO_ALEGRE");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_CODIGO_ITEM","85023484");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001);			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89573176
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1); 			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
-			//vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_FILIAL_ESTOQUE","0019 - PORTO_ALEGRE");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_FRETE_ADICIONAL","SIM");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019); 
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044"); //5300332890376075
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_CODE_VOUCHER",".*\\d{19}");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
-
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001);
-			
-			
-			
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_CODE_VOUCHER",".*\\d{19}");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VALE_TROCA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_CODE_VALE_TROCA",".*\\d{8}");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.ECONOMICA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.ELIMINADO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","1000008194"); //buscar pedido eliminado para usar aqui
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035); 
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.ECONOMICA);
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000010695");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.ELIMINADO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);			
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045); 
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000006803");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000011134");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.CANCELADO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);			
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO","82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000006885"); // pedido cancelado
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.CANCELADO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);			
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");		
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","1000008517"); // pedido devolvido
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.DEVOLVIDO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.DEVOLVIDO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "68691640456");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000007797");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.DEVOLVIDO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_DATA_INICIAL", "28/03/2019");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_DATA_FINAL", "29/03/2019");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_STATUS_PEDIDO","NA");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			// 		----------------------- MD00002 ------------------------------
-
-
-
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");   
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_TELEFONE_SERVIÇO","11982929201");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_TELEFONE_SERVIÇO","11987652345");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_USER", "55192309");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_QUANTIDADES_ITENS",2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_USER", "55000045"); //55192309
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_QUANTIDADES_ITENS",2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);// RETIRA_INTERNA_IMEDIATA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_USER", "55000045"); //55000035
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_QUANTIDADES_ITENS",2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA); //RETIRA_INTERNA_IMEDIATA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_USER", "55000035");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");  //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_USER", "55000035"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_USER", "553000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
-			 * 
-			 * 
-			 */
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_DESCONTO", "2");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_DESCONTO", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-//			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00004_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN005 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_VALIDADE", "09/23");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "183");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.get(1).put("AUT_NUMERO_CARRINHO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN005 - CTP 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_VALIDADE", "09/23");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "183");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.get(1).put("AUT_NUMERO_CARRINHO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00005_CTP00001);			
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN006 - CTR 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_CODIGO_ITEM","89411714");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_VALIDADE", "04/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_USER_APROVADOR","55230148");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN006 - CTP 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NOME_TITULAR", "Marcos Paulo de Oliveira");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_VALIDADE", "09/23");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "183");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_CARRINHO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00006_CTP00001);			
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN007 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193;\n 89296193;\n 89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00007_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN008 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN008 - CTR 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_USER","55708317"); //55000035
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");//42942711833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE); //LM_0035_CURITIBA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00008_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN009 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00009_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN010 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00010_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN011 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_USER","55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00011_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN012 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00012_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN013 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_CODIGO_ITEM","89576445");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00013_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN014 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_USER","55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89576445");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00014_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN015 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_USER", "55000119"); //55708317
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_DESCONTO", "9");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00015_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN016 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066 85617833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_DESCONTO", "700,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00016_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN017 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00017_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN018 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00018_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN019 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_USER", "55000045"); //5576316456068   55001063   550522446 55300745
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00019_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN020 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_USER", "55708317"); //55300745 5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "85617833"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00020_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN021 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_USER", "55000045"); //55708317 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283  94288636370
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_DESCONTO", "10");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);//aqui
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00021_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN022 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN023 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00023_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN024 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00024_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN025 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00025_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN026 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00026_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN027 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89249286"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_DESCONTO", "200,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00027_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN028 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00028_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 04 - CEN029 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_TIPO_DESCONTO", AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00029_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+// ************************ FIM ENTREGA 04 *****************************	
+	
+
+	
+// ************************ INI ENTREGA 05 *****************************
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN001 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_USER", "51030887"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00030_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN002 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_USER", "55300745");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00031_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN003 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_USER", "55300745");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00033_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN004 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_DESCONTO", "80");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00035_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN005 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00036_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN006 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_USER", "pedroantonioagostinho4@gmail.com");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_PASSWORD", "Leroy123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_CODIGO_ITEM","85101184");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_REGIAO_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_REGIAO.SP_SAO_PAULO_REGIAO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_VALIDADE", "12/2019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_CEP", "05424-004");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua ButantÃ£");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "225");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Pinheiros");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00054_CTP00001);	
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN007 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_USER", "55000119"); //51013346  55000035
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89391260 89576445
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");  //  4294271183    
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);   
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00040_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN008 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.EXPRESSA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00041_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN009 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.ECONOMICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00042_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN010 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_USER", "55000035"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_2X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00043_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN011 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00044_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN012 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_2X);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00045_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN013 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //85617833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_VALIDADE", "05/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00046_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN014 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_USER", "55001063"); //55001063 11013231
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //85617833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00047_CTP00001);	
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN015 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_USER", "55000035");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CHEQUE);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00048_CTP00001);	
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN016
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_USER", "11013200"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "68691640456"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VALE_TROCA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00756375");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+	
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00049_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN017 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_USER", "11013200"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_CODE_VOUCHER","6394422000000293143");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00050_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN018 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_CODIGO_ITEM","87489164");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_VALIDADE", "12/2019");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_CEP", "05424-004");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua ButantÃ");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "225");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Pinheiros");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00055_CTP00001);	
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN019 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CPF", AUTProjectsFunctions.gerarCPF());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CPF", cpf);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "Sao Bernado do campo");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Brigadeiro Faria Lima");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "845");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "CENTRO");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "Sao Bernado do campo");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CEP", "09720-971");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "84");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "CENTRO");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIVA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00056_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 05 - CEN020 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "336.250.296.224");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CNPJ", AUTProjectsFunctions.gerarCNPJ());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_CADASTRO", AUT_VA_CADASTROS.JURIDICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CNPJ", cnpj);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_FANTASIA", AUT_VA_CADASTROS.JURIDICA_ATUALIZACAO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "135.540.076.562");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCNPJ()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_TELEFONE","CELULAR");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "São Paulo");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "Avenida Morumbi");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "Morumbi");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CEP", "05606-200");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Avenida Morumbi");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "Morumbi");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "São Paulo");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO","ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NASCIMENTO", "26/11/1994");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00057_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+// ************************ FIM ENTREGA 05 *****************************	
+	
+	
+	
+// ************************ INI ENTREGA 06 *****************************
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN001 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_USER", "55300745");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_DESCONTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00032_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN002 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_USER", "55300745");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "385261679");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_MOTIVO_DESCONTO_FRETE.ATRASO_NA_ENTREGA_DE_PEDIDO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_TIPO_DESCONTO","PORCENTAGEM");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_DESCONTO","10");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_VALIDADE", "09/18");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);  
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00034_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN004 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_USER", "55230148");  //55000035
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");//89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //42942711833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_TELEFONE_SERVICO", "1187272345");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);  
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00038_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN006 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89388684"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);  
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00051_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN007 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_USER", "55000045");  //55000035
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODIGO_ITEM","85617833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM_VA", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA", "89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //42942711833
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.get(1).put("AUT_EAN_OR_CODE","89455163");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00052_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN008 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_USER", "55001063 "); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", ""); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00053_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN009 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CODIGO_ITEM_VA","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18.783.107/6918-63");  //  4294271183
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CPF_ESTRANGEIRO", cpfEstrangeiro);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_SEXO", "Feminino");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NASCIMENTO", "04/03/1990");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_ESTRANGEIRO", String.format("AUT NOME ESTRANG: %s : CPF EST: %s",codEstrangeiro,cpfEstrangeiro));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME", "AUT NOME PF: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_COMPLETO", "AUT NOME COMPLETO: ".concat(cpf));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ", "AUT NOME PJ: ".concat(cnpj));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA", "AUT NOME PJ:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_FANTASIA2", "AUT NOME PJ 2:".concat(AUTProjectsFunctions.gerarEstrangeiro()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_EMAIL", "aut.qaemail@automation.com");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL", "474.018.412.567");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_INCRICAO_ESTADUAL_PF", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_INCRICAO_MUNICIPAL", AUTProjectsFunctions.gerarEstrangeiro());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NOME_PJ_CONTATO", "NOME CONTATO PJ".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PJ_EMAIL_CONTATO", "EMAIL.QA@TESTE.COM.BR".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_PJ_DEPARTAMENTO_CONTATO", "QUALIDADE".concat(AUTProjectsFunctions.gerarCPF()));	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_TELEFONE", AUT_VA_TIPO_CONTATO.CELULAR.name());	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_TELEFONE", "11966447035");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_TELEFONE_2", "1196306-3067");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_UF_PESQUISA", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CIDADE_PESQUISA", "CAJAMAR");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_ENDERECO_PESQUISA", "RUA PREFEITO ANTONIO GARRIDO");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_BAIRRO_PESQUISA", "JORDANÃ‰SIA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_ENDERECO", AUT_VA_TIPO_ENDERECO.OBRA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CEP", "07776-000");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_RUA_ENDERECO", "Rua Explanada");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_ENDERECO", "256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO", "EXPLANADA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CIDADE_ENDERECO", "BOCAIÃšVA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_ESTADO_ENDERECO", AUT_VA_ESTADOS.MG);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO", "ACOUGUE DA ESQUINA");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA", AUT_VA_TIPO_RESIDENCIA.RURAL_CHACARA_FAZENDA_OU_SITIO);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CEP_2", "06013-006");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_RUA_ENDERECO_2", "Rua AntÃ´nio AgÃº");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_NUMERO_ENDERECO_2", "256");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_BAIRRO_ENDERECO_2", "Centro");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_COMPLEMENTO_ENDERECO_2", "CASA 123");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CIDADE_ENDERECO_2", "Osasco");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_ESTADO_ENDERECO_2", AUT_VA_ESTADOS.SP);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_REFERENCIA_ENDERECO_2", "Loja Sabaroa");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_TIPO_IMOVEL_RESIDENCIA_2", AUT_VA_TIPO_RESIDENCIA.LOJA_OU_SOBRELOJA);	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CNPJ_INVALIDO", "37.764.388/0009-90");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CPF_INVALIDO", "510.354.523-93");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.get(1).put("AUT_CEP_INVALIDO", "12345678");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00058_CTP00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN010 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.put(1, new java.util.HashMap<String,Object>());			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_USER", "55000035");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5300332890376075");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_VALIDADE", "09/18");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);    
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00059_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN011 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_CODIGO_ITEM", " 85617833"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00060_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN021 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_CODIGO_ITEM", "85023484"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.get(1).put("AUT_FILIAL_ESTOQUE","0035 - LOJA CURITIBA ATUBA");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00070_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN022 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_USER", "55000045"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1); 			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00071_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN023 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00072_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN024 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_CODIGO_ITEM","85023484");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00073_CTP00001);			//---------------------------------------------------------------------------------------------------------				
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN025 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220"); //89573176
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1); 			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_FRETE_ADICIONAL","SIM");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019); 
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00074_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN026 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044"); //5300332890376075
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automacao");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_CODE_VOUCHER",".*\\d{19}");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);   
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00075_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN027 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_CODE_VOUCHER",".*\\d{19}");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VALE_TROCA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_CODE_VALE_TROCA",".*\\d{8}");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_TIPO_FRETE", AUTFluxoSaida.AUT_VA_TIP_FRETE.ECONOMICA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035); 
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00076_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN031 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.ELIMINADO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","1000008194"); //buscar pedido eliminado para usar aqui
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN031 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000010695");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045); 
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00080_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN032 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN032 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000006803");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00081_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN033 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN033 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000011134");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00082_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN034 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN034 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO","82740645422");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000006885"); // pedido cancelado
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00083_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN035 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN035 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","1000008517"); // pedido devolvido
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00084_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN036 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_STATUS_PEDIDO",AUT_STATUS_PESQUISA.DEVOLVIDO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","NA");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN036 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "68691640456");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "1000007797");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00085_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN037 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN037 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.SIM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.get(1).put("AUT_STATUS_PEDIDO","NA");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN038 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_USER", "55001063");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044"); //5300332890376075
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automação");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_CODE_VOUCHER",".*\\d{19}");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");    
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN038 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO","FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "112221");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN039 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN039 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.NAO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_STATUS_PEDIDO","NA");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 06 - CEN040
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+// ************************ FIM ENTREGA 06 *****************************	
+	
+
+// ************************ INI ENTREGA 07 *****************************
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN001
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");   
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00001_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN002
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00002_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN003
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.get(1).put("AUT_TELEFONE_SERVIÇO","11982929201");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00003_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN004
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);  
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");                    
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN005
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN006
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_DESCONTO", "08,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN007
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN008
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN009
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.get(1).put("AUT_TELEFONE_SERVIÇO","11987652345");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00009_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN010
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00010_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN011
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_USER", "55192309");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_QUANTIDADES_ITENS",2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00011_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN012
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "75853695819");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);      
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");                         
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");			
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN013
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00013_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN014
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_USER", "55000045"); //55192309
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_QUANTIDADES_ITENS",2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);// RETIRA_INTERNA_IMEDIATA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");	
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00014_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN015
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_USER", "55000045"); //55000035
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_QUANTIDADES_ITENS",2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA); //RETIRA_INTERNA_IMEDIATA
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_INDEX_GARANTIA","1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);   
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00015_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN016
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_USER", "55000035");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");  //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00016_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN017
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_USER", "55000119"); //55000045
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_TIPO_DESCONTO", AUT_TIPO_DESCONTO.REAIS);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN018
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_USER", "55000035"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00018_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN019 
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00019_CTP00001() {
+		
+		//Não existe este dataflow. O script está apontando para o dataflow do cen 19 da entrega 04 (M0001). 
+		//Criar seu proprio data flow
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN020
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_USER", "553000119"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 1);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00020_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN021
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.put(1, new java.util.HashMap<String,Object>());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_DESCONTO", "2");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_DESCONTO", "1");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00021_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN022
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_USER", "55708317"); //5576316456068   55001063   550522446
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89232220"); //89407066 89407066
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_DESCONTO", "100,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN023
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_USER", "55000035"); 
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");//
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_DESCONTO", "8");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN024
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_USER", "55000119"); //55000045
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN025
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_USER", "55000119"); //55000045
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_CODIGO_ITEM","85023484"); //89455163
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN028
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_COMENTARIO","Test cenario 28 adicionar comentÃ¡rio");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN029
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_COMENTARIO","Test cenario 28 adicionar comentÃ¡rio");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 07 - CEN030
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_COMENTARIO","Test cenario 30 adicionar ocorrencia");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+// ************************ FIM ENTREGA 07 *****************************	
+	
+
+// ************************ INI ENTREGA 08 *****************************
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 08 - CEN001 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_USER", "55192309");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 08 - CEN001 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_USER", "55001062");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001);		
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 08 - CEN002 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_USER", "55192309");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 08 - CEN002 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_USER", "55001062");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 08 - CEN003 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_USER", "55192309");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 08 - CEN003 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_USER", "55001062");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+// ************************ FIM ENTREGA 08 *****************************	
+	
+	
+	
+// ************************ INI ENTREGA 09 *****************************
+
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN001 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_COMENTARIO","");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_CANAL","Loja");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN001 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_USER", "55000119"); //35
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_NUMERO_ORÇAMENTO", "");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN002 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "90,00");		
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN002 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001() {
+	
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN003 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN003 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_DESCONTO", "60,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN004 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "90,00");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN004 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_CODIGO_ITEM","89407066");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN005 - CTP
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_USER", "55708317");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}	
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 09 - CEN005 - CTR
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001() {
+		
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_USER", "55000119");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+		vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
+		
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+// ************************ FIM ENTREGA 09 *****************************	
+	
+	
+
+// ************************ INI ENTREGA 10 *****************************
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 10 - CEN001
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_USER", "55000035");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001);
+		
+		return AUT_GLOBAL_PARAMETERS;
+	}
+	
+	/**
+	 * 
+	 * Parametros para configuraÃ§Ã£o de componente Entrega 10 - CEN002
+	 * 
+	 */
+	public java.util.HashMap<String,
+	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> RSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001() {
+
+		java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
+
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_USER", "55000045");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
+		vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","88101125");
+
+		AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001);
+
+		return AUT_GLOBAL_PARAMETERS;
+	}
+// ************************ FIM ENTREGA 10 *****************************	
+	
+	
+	//********************* TESTE ********************
+	
+	
+//	/**
+//	 * 
+//	 * Carrega os parametros de inicialização padrão para todo sistema
+//	 * 
+//	 * @return dicionarioDeDados - por tabela
+//	 * 
+//	 */
+//	public java.util.HashMap<String,
+//	java.util.HashMap<Integer,java.util.HashMap<String,Object>>> autInitDataFlowConfiguration(boolean syncronizeAllObject) {
+//		try {
+//			AUT_CURRENT_RANDOM_MANAGER = new AUTNumerosRandomicos();
+//
+//
+//			AUT_GLOBAL_PARAMETERS = 
+//					(
+//							syncronizeAllObject 
+//							? 
+//									new java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>() 
+//									: 
+//										(
+//												AUT_GLOBAL_PARAMETERS==null ? 
+//														new java.util.HashMap<String,java.util.HashMap<Integer,java.util.HashMap<String, Object>>>() 
+//														: 
+//															AUT_GLOBAL_PARAMETERS
+//												)
+//							);
+//
+//
+//			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataLogin = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
+//
+//			/**
+//			 * 
+//			 * Configuração de parametros para o login
+//			 * 
+//			 */
+//			vaDataLogin.put(1, new java.util.HashMap<String,Object>());
+//			vaDataLogin.get(1).put("AUT_USER", "55000035");//"55000001");
+//			vaDataLogin.get(1).put("AUT_PASSWORD", "1234");
+//			vaDataLogin.get(1).put("AUT_URL_VA", "https://vahomolog.leroymerlin.com.br/va/lmbr/pt/BRL/login");			
+//			vaDataLogin.get(1).put("AUT_URL_BOITATA", "https://homolog.leroymerlin.com.br");
+//
+//
+//			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.AUT_VA_LOGIN.toString(),vaDataLogin);
+//
+//			//Inclusao de tabela - Pedidos
 //			/**
 //			 * 
 //			 * 
 //			 * 
-//			 * Parametros para configuraÃ§Ã£o de componentes de Pedidos do sistema VA
+//			 * Parametros para configuração de componente de login sistema HMC
 //			 * 
 //			 * 
 //			 */
-//			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00022_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 //
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.put(1, new java.util.HashMap<String,Object>());
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_USER", "55300745"); //5576316456068   55001063   550522446
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); //89407066 89407066
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_QUANTIDADE_ITENS", 2); 
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);
+//			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataCadastro = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
 //
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_DESCONTO", "2");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.SALDO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA);
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);
+//			vaDataCadastro.put(1, new java.util.HashMap<String,Object>());
 //
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_DESCONTO", "1");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
+//			vaDataCadastro.put(1, new java.util.HashMap<String,Object>());
+//			String codEstrangeiro = AUTProjectsFunctions.gerarEstrangeiro();
+//			String cnpj = AUTProjectsFunctions.gerarCNPJ();
+//			String cpf = AUTProjectsFunctions.gerarCPF();
+//			String cpfEstrangeiro = AUTProjectsFunctions.gerarCPF();
+//			String inscricaoEstadual = AUTProjectsFunctions.autGetIncriptionPR();
 //
-//			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00022_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_USER", "55000035"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_CODIGO_ITEM","89407066");//
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_MOTIVO", AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_DESCONTO", "8");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ESPECIAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00023_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.get(1).put("AUT_COMENTARIO","Test cenario 28 adicionar comentÃ¡rio");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00028_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.get(1).put("AUT_COMENTARIO","Test cenario 28 adicionar comentÃ¡rio");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00029_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ORÃ‡AMENTOS do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.get(1).put("AUT_COMENTARIO","Test cenario 30 adicionar ocorrencia");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00030_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_COMENTARIO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.get(1).put("AUT_CANAL","Loja");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTP00001);
-
-			//---------------------------------------------------------------------------------------------------------				
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);  
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");                    
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00004_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00005_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_DESCONTO", "08,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.REAIS);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00006_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00007_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_TELEFONE_SERVIÃ‡O", "1187272345");		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00008_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "75853695819");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);      
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");                         
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00012_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_USER", "55000119"); //55000045
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_TIPO_DESCONTO", AUT_TIPO_DESCONTO.REAIS);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00017_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_USER", "55000119"); //55000045
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00024_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de OrÃ§amento do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_USER", "55000119"); //55000045
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_CODIGO_ITEM","85023484"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_DESCONTO", "20,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00002_CN00025_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_USER", "55000119"); //35
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.get(1).put("AUT_NUMERO_ORÇAMENTO", "");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001);
-
-			// -------------------------------------------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "90,00");		
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00001_CTR00001);
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00002_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_DESCONTO", "60,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00003_CTR00001);
-
-			//-------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "90,00");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_QUANTIDADE_ITENS", 2);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_CODIGO_ITEM","89407066");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00004_CTR00001);
-
-			//-------------------------------------------------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de AprovaÃ§Ã£o Comercial do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_TIPO_DESCONTO",AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00003_CN00005_CTR00001);
-			//-------------------------------------------------------------------------------------------------------------------
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044"); //5300332890376075
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuario Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_CODE_VOUCHER",".*\\d{19}");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");    
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_USER", "55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO","FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "112221");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00087_CTP00001);
-
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTR00001);
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00086_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_CONDICOES_PEDIDO",AUT_MANTER_CONDICOES.NAO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_STATUS_PEDIDO","NA");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00088_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_CODIGO_ITEM","89573176");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_AGENDADA); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00001_CN00089_CTP00001);
-
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * Parametros comuns aos cenários
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004.get(1).put("AUT_USER", "55000035");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.get(1).put("AUT_LOJA_SELECIONADA","Loja | Porto Alegre"); //LM_0045_SAO_BERNARDO_DO_CAMPO
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00001_CTP00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_USER", "55001063"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00002_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_USER", "55436723"); //55001063
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM", "120");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89407066"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283  89716885000133
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO); 		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD); // VISA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001"); //4000000000000044
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");	//123
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00003_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());			
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_USER", "55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString()); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_CODE_VALE_TROCA","00620723");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00004_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00005_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00005_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_CODE_VOUCHER","6394422000000293143");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO_2", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO_2", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO_2", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.get(1).put("AUT_USER_APROVADOR","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001.get(1).put("AUT_USER", "55192309"); //5576316456068
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00006_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE.toString()); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_USER", "55436723"); //55001063
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "120");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_CODIGO_ITEM", "86470475"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283  89716885000133
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_USER_APROVADOR","55708317");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.get(1).put("AUT_CANAL","Televendas");	
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTR00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001.get(1).put("AUT_USER", "55192309"); //5576316456068
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00007_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00008_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_USER", "55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_CODIGO_ITEM","89411714");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString()); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_USER_APROVADOR","55230148");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.CAIXA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_CODE_VOUCHER","6394422000000293143");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00009_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTP00001);
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO .toString()); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_USER", "55436723"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89411714"); //89407066 89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.MASTERCARD);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "5000000000000001");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_USER_APROVADOR","55230148");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");			
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001);
-			//AUT_GLOBAL_PARAMETERS.put("CN00004_CADASTRO_CLIENTE_PF_LOJA0035",vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA); //LM_0035_CURITIBA
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_USER", "55001063"); //55001063
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89573176"); //89455163
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VOUCHER);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO_2",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_CODE_VOUCHER",".*\\\\d{19}");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0035);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_DESCONTO", "80,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001.get(1).put("AUT_USER", "55192309"); //5576316456068
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "4566677778");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00011_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE .toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_USER", "55000119"); //5576316456068   55001063   550522446
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89590473"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_USER_EDITOR", "55436723"); //usar usuário de  televendas
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_DESCONTO", "5,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);			
-			
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001.get(1).put("AUT_USER", "55192309"); //5576316456068
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "4566677778");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00012_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_USER", "55000119"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM", "1");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_CODIGO_ITEM", "89590473"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "82740645422"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_DESCONTO", "5,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_MOTIVO", br.lry.components.va.cat010.AUTDesconto.AUT_VA_MOTIVO.ERRO_NO_PRECO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_FLUXO_SAIDA", br.lry.components.va.cat007.AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_VALOR_PAGAMENTO", "10,00");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO", br.lry.components.va.cat009.AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_USER_EDITOR","55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
-
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001.get(1).put("AUT_USER", "55192309"); //5576316456068
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "4566677778");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00013_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_CODIGO_ITEM","89590473");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_USER_EDITOR","55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_USER", "55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_CODIGO_ITEM","89590473");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_TIPO_DESCONTO",br.lry.components.va.cat010.AUTDesconto.AUT_TIPO_DESCONTO.PORCENTAGEM);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_USER_EDITOR","55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");	
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00014_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_USER", "55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_CODIGO_ITEM","85617833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_USER", "55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_CODIGO_ITEM","85617833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0045_SAO_BERNARDO_DO_CAMPO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");			
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00015_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_USER", "55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTR00001);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00016_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_USER","55000119");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_PASSWORD","1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_QUANTIDADE_ITEM","2");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.get(1).put("AUT_HORARIO","MANHÂ");	
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTR00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.put(1, new java.util.HashMap<String,Object>());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_USER","55436723");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_PASSWORD","1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_QUANTIDADE_ITEM","2");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_CODIGO_ITEM","89232220");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaVA.AUT_VA_LISTA_LOJAS.LM_0019_PORTO_ALEGRE);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NUMERO_CARTAO", "4000000000000044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NOME_TITULAR", "Usuário Automação");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_VALIDADE", "12/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0019);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_TIPO_FRETE",AUT_VA_TIPO_FRETE.NORMAL);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.get(1).put("AUT_HORARIO","MANHÂ");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00017_CTP00001);
-
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuração de componente de Televendas do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_USER", "55001063");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_CODIGO_ITEM","89455163");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "42942711833");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_LOJA_SELECIONADA",AUTSelecaoLojaBoitata.AUT_BOITATA_LISTA_LOJAS.LM_0035_CURITIBA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.ENTREGA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.CARTAO_CREDITO.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001);
-
-
-
-
-			// -------------------------------------------------------------------------
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_USER", "55192309");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_USER", "55001062");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00001_CTR00001);		
-
-			//-------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_USER", "55192309");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
-
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_USER", "55001062");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00002_CTR00001);
-
-			//-------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_USER", "55192309");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO", "");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.get(1).put("AUT_DESCONTO_AUMENTA", "20,00");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTP00001);
-
-			// -------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de Antifraude do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_USER", "55001062");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_DOCUMENTO", "758.536.958-19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_FLUXO_SAIDA",AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_AGENDADA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_MEIO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.VISA.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.SEM_JUROS_1X.toString());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_CARTAO", "4000 0000 0000 0044");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NOME_TITULAR", "UsuÃ¡rio AutomaÃ§Ã£o");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_VALIDADE", "01/19");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_CODIGO_CARTAO", "123");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.get(1).put("AUT_OPCAO_LOJA",AUT_VA_OPCAO_LOJA_FLUXO_SAIDA.LOJA_0045);
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00006_CN00003_CTR00001);
-
-
-			//-------------------------------------------------------------------------
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ExclusÃ£o do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_USER", "55000035");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM","89296193");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00001_CTP00001);
-
-			//----------------------------------------------------------------------------------------------------------	
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para configuraÃ§Ã£o de componente de ExclusÃ£o do sistema VA
-			 * 
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_USER", "55000045");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM","88101125");
-
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00007_CN00002_CTP00001);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 1 - VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00001);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00003 e CTP00004
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 2 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89296193");				
-			//pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_NUMERO_PEDIDO", "");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_COORDENADOR", "51028487");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-				
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00004);
-
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_SAP_MD00012_CN00001 CTP00005 e CTP00006
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 3 - SAP
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.put(1, new java.util.HashMap<String,Object>());
-
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("USER_SAP", "51024057");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("PWD_SAP", "fielpalavradeus");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("INIT_TRANSACTION", "true");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_NUMERO_PEDIDO", "");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_DOCUMENTO_SD", "30003866");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_LOJA", "0019");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_DATA_INICIAL", "10.06.2019");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_DATA_FINAL", "20.06.2019");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_FILA", "ARMAZENA");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_FORMATO", "16X20ITS");
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.get(1).put("AUT_DOC_FORNECIMENTO", "800000109");			
-
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005.toString(),sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00001_CTP00005);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00001 CTP00007 e CTP00008
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 4 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_CODIGO_ITEM", "89296193");								
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_COORDENADOR", "51028487");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_DDD", "11");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_TELEFONE", "912123434");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00007);
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00008);
-			
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00001 CTP00009
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 5 - SAFE
-			 * 
-			 */
-			
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.get(1).put("USER_SAFE", "51028487");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.get(1).put("PWS_SAFE", "Auto5@2017");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00001_CTP00009);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_ESTRANGEIRA_COM_DEVOLUCAO Parte 1 - VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00001);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00003 e CTP00004
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_ESTRANGEIRA_COM_DEVOLUCAO Parte 2 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89296193");				
-			//pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003.get(1).put("AUT_NUMERO_PEDIDO", "");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_COORDENADOR", "51028487");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00001_CTP00003);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-				
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00004);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_SAP_MD00012_CN00002 CTP00005 e CTP00006
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_ESTRANGEIRA_COM_DEVOLUCAO Parte 3 - SAP
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.put(1, new java.util.HashMap<String,Object>());
-
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("USER_SAP", "51024057");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("PWD_SAP", "fielpalavradeus");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("INIT_TRANSACTION", "true");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_NUMERO_PEDIDO", "");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_DOCUMENTO_SD", "30003866");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_LOJA", "0019");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_DATA_INICIAL", "10.06.2019");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_DATA_FINAL", "20.06.2019");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_FILA", "ARMAZENA");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_FORMATO", "16X20ITS");
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.get(1).put("AUT_DOC_FORNECIMENTO", "800000109");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005.toString(),sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00002_CTP00005);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00001_CTP00006);
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00002 CTP00007 e CTP00008
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 4 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_CODIGO_ITEM", "89296193");								
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_COORDENADOR", "51028487");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_DDD", "11");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_TELEFONE", "912123434");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00002_CTP00007);
-			
-			
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00002_CTP00008);
-			
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00001 CTP00009
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 5 - SAFE
-			 * 
-			 */
-						
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.get(1).put("USER_SAFE", "51028487");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.get(1).put("PWS_SAFE", "Auto5@2017");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00002_CTP00009);			
-			
-			
-			//----------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001
-			/**
-			 * Parametros para configuração de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PJ_COM_DEVOLUCAO Parte 1 - VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00001);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00003 e CTP00004
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PJ_COM_DEVOLUCAO Parte 2 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89296193");				
-			//pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_NUMERO_PEDIDO", "");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_COORDENADOR", "51028487");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00003);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-				
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00004);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_SAP_MD00012_CN00003 CTP00005 e CTP00006
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PJ_COM_DEVOLUCAO Parte 3 - SAP
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.put(1, new java.util.HashMap<String,Object>());
-
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("USER_SAP", "51024057");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("PWD_SAP", "fielpalavradeus");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("INIT_TRANSACTION", "true");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_NUMERO_PEDIDO", "");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_DOCUMENTO_SD", "30003866");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_TIPO_PEDIDO", "ZVAS");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_LOJA", "0019");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_DATA_INICIAL", "10.06.2019");	
-			sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_DATA_FINAL", "20.06.2019");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_FILA", "ARMAZENA");	
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_FORMATO", "16X20ITS");
-			//sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.get(1).put("AUT_DOC_FORNECIMENTO", "800000109");			
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005.toString(),sapDataRSP_PJTTRC_FRT001_SAP_MD00012_CN00003_CTP00005);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00006);
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00003 CTP00007 e CTP00008
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PJ_COM_DEVOLUCAO Parte 4 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_CODIGO_ITEM", "89296193");								
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_COORDENADOR", "51028487");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_EXTERNA_IMEDIATA);	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_DDD", "11");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_TELEFONE", "912123434");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00003_CTP00007);
-			
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00003_CTP00008);
-			
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00001 CTP00009
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_PJ_COM_DEVOLUCAO Parte 5 - SAFE
-			 * 
-			 */
-			
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.get(1).put("USER_SAFE", "51028487");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.get(1).put("PWS_SAFE", "Auto5@2017");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.get(1).put("AUT_NUMERO_DOCUMENTO", "18783107691863"); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00003_CTP00009);
-
-			
-			
-			//----------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001
-			/**
-			 * Parametros para configuração de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 1 - VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00001);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00003 e CTP00004
-			/**
-			 * Parametros para configuração de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 2 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89296193");				
-			//pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_NUMERO_PEDIDO", "");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_PWS_COORDENADOR", "51013346");
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00003);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-				
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00004);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_PDV_MD00012_CN00004 CTP00005 e CTP00006
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 3 - PDV
-			 * 
-			 */		
-		
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89296193");								
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_COORDENADOR", "51013346");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_PWS_COORDENADOR", "51013346");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_DDD", "11");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_TELEFONE", "912123434");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00004_CTP00005);
-			
-			
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); //43409000283
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00004_CTP00006);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_PDV_MD00012_CN00004 CTP00007
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_PF_COM_DEVOLUCAO Parte 4 - SAFE
-			 * 
-			 */				
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.get(1).put("USER_SAFE", "51028487");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.get(1).put("PWS_SAFE", "Auto5@2017");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "94288636370"); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00004_CTP00007);		
-			
-			//----------------------------------------------------------------------------------------------------------				
-			
-			//----------------------------------------------------------------------------------------------------------	
-
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001
-			/**
-			 * Parametros para configuração de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_ESTRANGEIRO_COM_DEVOLUCAO Parte 1 - VA
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.put(1, new java.util.HashMap<String,Object>());
-
-
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_PASSWORD", "1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_MEIO_PAGAMENTO", AUTMeiosPagamento.AUT_VA_MEIOS_PAGAMENTO.DINHEIRO);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_PLANO_PAGAMENTO",AUTMeiosPagamento.AUT_VA_PLANO_PAGAMENTO.A_VISTA);
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00001);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00003 e CTP00004
-			/**
-			 * Parametros para configuração de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_ESTRANGEIRA_COM_DEVOLUCAO Parte 2 - PDV
-			 * 
-			 */
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_CODIGO_ITEM", "89296193");				
-			//pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_NUMERO_PEDIDO", "");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_COORDENADOR", "51013346");				
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_PWD_COORDENADOR", "51013346");
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00003);
-			
-
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-				
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00004);
-
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_PDV_MD00012_CN00005 CTP00005 e CTP00006
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_INT_IMEDIATA_DINHEIRO_ESTRANGEIRA_COM_DEVOLUCAO Parte 3 - PDV
-			 * 
-			 */		
-		
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();	
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.put(1, new java.util.HashMap<String,Object>());
-
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_OPERADOR", "951030887");			
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_PWD_OPERADOR", "951030887");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_CODIGO_ITEM", "89296193");								
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_COORDENADOR", "51013346");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_PWD_COORDENADOR", "51013346");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_FLUXO_SAIDA", AUTFluxoSaida.AUT_VA_FLUXO_SAIDA.RETIRA_INTERNA_IMEDIATA);	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_LOJA_DEVOLUCAO", "0019");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_QUANTIDADE_ITEM", "1");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_DDD", "11");	
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_TELEFONE", "912123434");		
-			pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.get(1).put("AUT_NUMERO_PEDIDO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005.toString(),pdvDataRSP_PJTTRC_FRT001_PDV_MD00012_CN00005_CTP00005);
-			
-			
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_USER", "55000019");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_PASSWORD", "1234");
-//			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_CODIGO_ITEM", "89296193"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_NUMERO_PEDIDO","");
-			vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.get(1).put("AUT_STATUS_ESPERADO","");
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00012_CN00005_CTP00006);
-
-			
-			
-			//Inclusao de tabela - RSP_PJTTRC_FRT001_PDV_MD00012_CN00005 CTP00007
-			/**
-			 * Parametros para configuraÃ§Ã£o de componente de Integração RETIR_EXT_IMEDIATA_DINHEIRO_ESTRANGEIRA_COM_DEVOLUCAO Parte 4 - SAFE
-			 * 
-			 */				
-			
-			java.util.HashMap<Integer,java.util.HashMap<String,Object>> vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.put(1, new java.util.HashMap<String,Object>());
-		
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.get(1).put("USER_SAFE", "51028487");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.get(1).put("PWS_SAFE", "Auto5@2017");
-			vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.get(1).put("AUT_NUMERO_DOCUMENTO", "FR1234"); 
-			
-			AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007.toString(),vaDataRSP_PJTTRC_FRT001_SAFE_MD00012_CN00005_CTP00007);		
-			
-			//----------------------------------------------------------------------------------------------------------							
-			
-			
-			//Inclusao de tabela - Tabela de Itens
-			/**
-			 * 
-			 * 
-			 * 
-			 * Parametros para carga dos Itens
-			 * 
-			 * 
-			 */
-			vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001 = new java.util.HashMap<Integer,java.util.HashMap<String,Object>>();
-			java.util.HashMap<String,java.util.HashMap<String,Object>> itens = new java.util.HashMap<String,java.util.HashMap<String,Object>>();	
-			itens.put("Produto", new java.util.HashMap<String,Object>());
-			//vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.get("Produto").put("Quantidade", "FluxoSaida");
-
-			//AUT_GLOBAL_PARAMETERS.put(AUT_TABLE_PARAMETERS_NAMES.RSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001.toString(),vaDataRSP_PJTTRC_FRT001_VA_MD00004_CN00018_CTP00001);
-
-			//AUT_IT00004_STVA_ID00004_FRT004_CN00004_CADASTRO_CLIENTE_PF_LOJA0035
-			
-			// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------			
-
-
-
-
-			return AUT_GLOBAL_PARAMETERS;
-		}
-		catch(java.lang.Exception e) {
-			System.out.println("DATAFLOW : ERROR : INIT PARAMETERS");
-			System.out.println(e.getMessage());
-			//AUT_LOG_MANAGER.logMensagem("AUT ERROR: INICIALIZATION OF PARAMETERS DATAFLOW : ".concat(e.getMessage()));
-
-			e.printStackTrace();
-
-			return null;
-		}
-	}
+//
+//			
+//			//----------------------------------------------------------------------------------------------------------							
+//			
+//			
+//			return AUT_GLOBAL_PARAMETERS;
+//		}
+//		catch(java.lang.Exception e) {
+//			System.out.println("DATAFLOW : ERROR : INIT PARAMETERS");
+//			System.out.println(e.getMessage());
+//			//AUT_LOG_MANAGER.logMensagem("AUT ERROR: INICIALIZATION OF PARAMETERS DATAFLOW : ".concat(e.getMessage()));
+//
+//			e.printStackTrace();
+//
+//			return null;
+//		}
+//	}
 
 
 	/**
@@ -7425,6 +7882,48 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		System.out.println(parametersOut);
 
 		return parametersOut;
+	}
+	
+	/**
+	 * Executa procedimentos para copi de dados de um hash map orirgem para o destino especificado
+	 * 
+	 * 
+	 * @param dataFlowOrig - Dataflow de origem 
+	 * @param dataFlowDest - Dataflow de destino dos dados
+	 * 
+	 * @return AUTDataFlow - Objeto resultante do merge de dados entre estruturas
+	 * 
+	 */
+	public AUTDataFlow autCopyDataFlow(AUTDataFlow dataFlowOrig,AUTDataFlow dataFlowDest) {
+		try {
+			System.out.println("AUT INFO: DATAFLOW : COPY DATA : INIT");
+			System.out.println("BEFORE : DATA FLOW ORIG:");
+			System.out.println(dataFlowOrig);
+			System.out.println("BEFORE : DATA FLOW DEST:");
+			System.out.println(dataFlowDest);
+
+			for(String keyTable : dataFlowOrig.AUT_GLOBAL_PARAMETERS.keySet()) {
+				if(dataFlowDest.AUT_GLOBAL_PARAMETERS.containsKey(keyTable)) {
+					dataFlowDest.AUT_GLOBAL_PARAMETERS.remove(keyTable);
+					dataFlowDest.AUT_GLOBAL_PARAMETERS.put(keyTable, dataFlowOrig.AUT_GLOBAL_PARAMETERS.get(keyTable));
+				}
+			}
+
+			System.out.println("AFTER : DATA FLOW ORIG:");
+			System.out.println(dataFlowOrig);
+			System.out.println("AFTER : DATA FLOW DEST:");
+			System.out.println(dataFlowDest);
+
+			System.out.println("AUT INFO: DATAFLOW : COPY DATA : END");
+			return dataFlowDest;
+		}
+		catch(java.lang.Exception e) {
+			System.out.println("AUT ERRO: DATAFLOW : COPY DATA");
+			System.out.println(e.getMessage());
+			e.printStackTrace();			
+
+			return null;
+		}
 	}
 
 	/**
