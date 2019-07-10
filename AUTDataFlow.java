@@ -884,9 +884,9 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			hmcLogin.put(1, new java.util.HashMap<String,Object>());
 
 			hmcLogin.get(1).put("AUT_URL", "https://10.56.62.199:9002/hmc/hybris");
-			hmcLogin.get(1).put("AUT_USER", "marcos.oliveira");
+			hmcLogin.get(1).put("AUT_USER2", "marcos.oliveira");
 			hmcLogin.get(1).put("AUT_PASSWORD", "1234");
-			hmcLogin.get(1).put("AUT_USER_ID", "55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(6)));	//criar numero randomico
+			hmcLogin.get(1).put("AUT_USER_ID", "marcos.oliveira");//"55".concat(AUTProjectsFunctions.gerarItemChaveRandomico(6)));	//criar numero randomico
 			hmcLogin.get(1).put("AUT_USER_NAME", "AUT HMCVA USER: ");	//Criar nome padronizado
 			hmcLogin.get(1).put("AUT_USER_EMAIL", "automationTest@softtek.com");
 			hmcLogin.get(1).put("AUT_NOVA_SENHA", "1234");
@@ -6085,7 +6085,7 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_PWD_OPERADOR", "951028487");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_COORDENADOR", "9951028487");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_FLUXO_SAIDA",   br.lry.components.va.AUTVAGeradorPedido.AUT_VA_FLUXO_SAIDA.REITRADA_EXTERNA_IMEDIATA.name());
-			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_QUANTIDADE_PADRAO_DEVOLUCAO",   "1");
+			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_QUANTIDADE_PADRAO_DEVOLUCAO",   "20160");
 			vaDataRSP_PJTTRC_FRT001_VA_MD00009_CN00001_CTP00001.get(1).put("AUT_PWD_COORDENADOR",   "51028487");
 				
 			
