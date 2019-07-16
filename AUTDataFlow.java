@@ -451,9 +451,9 @@ public class AUTDataFlow extends AUTFWKTestObjectBase{
 		public String toString() {
 			// TODO Auto-generated method stub
 			switch(this) {
-			case RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001:{
-				return "CN00004_CADASTRO_CLIENTE_PF_LOJA0035";
-			}
+			//case RSP_PJTTRC_FRT001_VA_MD00004_CN00010_CTR00001:{
+			//	return "CN00004_CADASTRO_CLIENTE_PF_LOJA0035";
+			//}
 			case AUT_SAFE_GERADOR_VOUCHER_LINX:{
 				return "AUTSAFEGERADORVOUCHER001";
 			}
